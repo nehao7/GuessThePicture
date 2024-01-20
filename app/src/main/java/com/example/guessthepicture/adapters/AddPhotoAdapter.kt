@@ -35,5 +35,4 @@ class AddPhotoAdapter(var context: Context,
     }
 
 
-
 }

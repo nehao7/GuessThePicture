@@ -1,5 +1,6 @@
 package com.example.guessthepicture.roomdb
 
+import android.media.AudioRecord
 import android.speech.tts.Voice
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,5 +13,5 @@ data class PersonEntity (
     var picture : String?= "",
     var name : String ?= "",
     var relation:String?="",
-    var voice: String?=""
+    var audioRecord: String=""
 )
