@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameLevelsActivity">
+
+
+
+    <TextView
+        android:id="@+id/tvGametitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Would you Like to Play"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:layout_marginHorizontal="20dp"
+        android:gravity="center"
+        />
+    <TextView
+        android:id="@+id/Game1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Match the Face"
+        app:layout_constraintTop_toBottomOf="@+id/tvGametitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="15dp"
+        android:background="@drawable/roundbutton"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/Game2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Flip the Cards and\n Match the Face"
+        app:layout_constraintTop_toBottomOf="@+id/Game1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:layout_marginTop="30dp"
+        android:padding="3dp"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="15dp"
+        android:background="@drawable/roundbutton"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/Game3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Match The Face with name"
+        app:layout_constraintTop_toBottomOf="@+id/Game2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        android:textSize="30dp"
+        android:layout_marginTop="30dp"
+        android:padding="3dp"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="15dp"
+        android:background="@drawable/roundbutton"
+        android:gravity="center"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

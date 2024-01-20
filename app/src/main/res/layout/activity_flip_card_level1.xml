@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FlipCardLevel1Activity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Flip the card and match the picture"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/imgmotheroriginal"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="156dp"
+        android:src="@drawable/mother"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <ImageView
+        android:id="@+id/imgmother"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/mother"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="80dp"
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="70dp" />
+    <ImageView
+        android:id="@+id/imgmotherback"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/roundbutton"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="80dp"
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="70dp" />
+
+    <ImageView
+        android:id="@+id/imgfather"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="132dp"
+        android:layout_marginEnd="80dp"
+        android:background="@mipmap/img_place_holder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgmother" />
+    <ImageView
+        android:id="@+id/imgfatherback"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="132dp"
+        android:layout_marginEnd="80dp"
+        android:background="@drawable/roundbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgmother" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnFlip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@drawable/roundbutton"
+        android:text="Flip"
+        android:visibility="gone"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/imgfather"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
