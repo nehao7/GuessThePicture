@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -48,6 +49,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
     var bitmap : Bitmap ? = null
     var view:View?=null
     lateinit var gameDB : GameDB
+    var galleryUri:Uri?=null
     var photoDisplayViewItemBinding: PhotoDisplayViewItemBinding ?= null
 
 //    val rootView =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
@@ -58,7 +60,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
             val uriContent = result.uriContent
             val uriFilePath = result.getUriFilePath(this) // optional usage
             captureImgUri=result!!.originalUri
-            var galleryUri = result.uriContent
+            galleryUri = result.uriContent
             bitmap = result.bitmap
             photoDisplayViewItemBinding?.img?.setImageURI(galleryUri)
 
@@ -94,6 +96,11 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
 
 
         binding.btnSave.setOnClickListener {
+            lifecycleScope.launch {
+                data.add(PersonEntity(0,galleryUri.toString(),"Mother"))
+                Log.e("entitylist", "initviews: "+data )
+            }
+
             startActivity(Intent(this,GameLevelsActivity::class.java))
         }
     }
@@ -132,19 +139,12 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
 
         }
         photoDisplayViewItemBinding?.btnaddImage?.setOnClickListener {
-
+        print("bitmap $bitmap")
             lifecycleScope.launch {
-                gameDB.gameInterface().insertPerson(PersonEntity(picture = bitmap?.let { it1 ->
-                    GeneralFunctions.convertBitmapToString(
-                        it1
-                    )
-                }, name = "Mother"))
-            }
-            lifecycleScope.launch {
-                data.addAll(gameDB.gameInterface().getAllPersons())
+                gameDB.gameInterface().insertPerson(PersonEntity(picture = galleryUri.toString()
+                , name = "Mother"))
             }
 
-            startActivity(Intent(this,GameLevelsActivity::class.java))
         }
         dialog.show()
     }

@@ -49,7 +49,7 @@ class AddAudioAdapter(var audioList: ArrayList<PersonEntity>, var onclick:itemCl
     }
 
     override fun getItemCount(): Int {
-        return 3
+        return 0
     }
 
     interface itemClickListener {

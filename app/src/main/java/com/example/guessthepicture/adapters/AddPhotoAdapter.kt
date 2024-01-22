@@ -1,6 +1,7 @@
 package com.example.guessthepicture.adapters
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,6 @@ class AddPhotoAdapter(var context: Context,
 //    private var onClickListener: OnClickListener? = null
 
     inner class ViewHolder(var binding : PhotoDisplayViewItemBinding): RecyclerView.ViewHolder(binding.root){
-
     }
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -27,7 +27,7 @@ class AddPhotoAdapter(var context: Context,
 
     override fun onBindViewHolder(holder: AddPhotoAdapter.ViewHolder, position: Int) {
 
-//        holder.binding.img.setImageResource(data[position].id)
+        holder.binding.img.setImageURI(Uri.parse(data[position].picture))
     }
 
     override fun getItemCount(): Int {

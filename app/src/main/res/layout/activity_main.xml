@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Welcome To \nGuess The Picture"
         android:gravity="center"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textStyle="bold"
