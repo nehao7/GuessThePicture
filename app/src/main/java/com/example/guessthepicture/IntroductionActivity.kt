@@ -36,6 +36,7 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.example.guessthepicture.adapters.AddPhotoAdapter
 import com.example.guessthepicture.databinding.ActivityIntroductionBinding
+import com.example.guessthepicture.databinding.PhotoDisplayViewItemBinding
 
 
 class IntroductionActivity : AppCompatActivity(), View.OnClickListener , CropImageView.OnCropImageCompleteListener{
@@ -49,6 +50,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener , CropIma
     var bitmap : Bitmap ? = null
     var view:View?=null
     lateinit var gameDB : GameDB
+//    val rootView =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
 
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
@@ -57,47 +59,8 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener , CropIma
             val uriFilePath = result.getUriFilePath(this) // optional usage
             captureImgUri=result!!.originalUri
             var galleryUri = result.uriContent
-            if(view==imgview){
-                imgview?.setImageURI(galleryUri)
-            }
+            imgview?.setImageURI(galleryUri)
 
-            if (view==binding.img1){
-                binding.img1.setImageURI(galleryUri)
-            }
-            else if (view==binding.img2){
-                binding.img2.setImageURI(galleryUri)
-            }
-            else if (view==binding.img3){
-                binding.img3.setImageURI(galleryUri)
-
-            }
-            else if (view==binding.img4){
-                binding.img4.setImageURI(galleryUri)
-
-            }
-            else if (view==binding.img4){
-                binding.img4.setImageURI(galleryUri)
-
-            }
-            else if (view==binding.img5){
-                binding.img5.setImageURI(galleryUri)
-
-            }
-            else if (view==binding.img6){
-                binding.img6.setImageURI(galleryUri)
-            }
-            else if (view==binding.img7){
-                binding.img7.setImageURI(galleryUri)
-
-            }
-            else if (view==binding.img8){
-                binding.img8.setImageURI(galleryUri)
-
-            }
-            else if (view==binding.img9){
-                binding.img9.setImageURI(galleryUri)
-
-            }
         } else {
             // An error occurred.
             val exception = result.error
@@ -281,32 +244,26 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener , CropIma
             ),))
     }
     private fun photopickerdialog() {
-        val builder = AlertDialog.Builder(this@IntroductionActivity)
-        val inflater = layoutInflater
-        val rootView: View = inflater.inflate(R.layout.photo_display_view_item, null)
-        val imageset = rootView.findViewById<ImageView>(R.id.img)
-        val name = rootView.findViewById<EditText>(R.id.addname)
-        val btnadd=rootView.findViewById<Button>(R.id.btnadd)
-        builder.setView(rootView)
-        builder.setCancelable(true)
-        pickerDialog = builder.create()
+        var dialog = Dialog(this)
+        val rootView =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
+        dialog.setContentView(rootView.root)
+        dialog.setCancelable(true)
         val lp2 = WindowManager.LayoutParams()
-        val window: Window = pickerDialog.getWindow()!!
-        pickerDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val window: Window = dialog.getWindow()!!
+        dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         lp2.copyFrom(window.attributes)
         //This makes the dialog take up the full width
         lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
         lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
         window.attributes = lp2
-        val dialogWindow: Window = pickerDialog.getWindow()!!
-        val lp = dialogWindow.attributes
+        val dialogWindow: Window = dialog.getWindow()!!
         dialogWindow.setGravity(Gravity.CENTER)
-       imageset.setOnClickListener {
+       rootView.img.setOnClickListener {
             cropImageLaunch()
-            imgview=rootView.findViewById<ImageView>(R.id.img)
+            imgview=rootView.img
             view=imgview
         }
-        btnadd.setOnClickListener {
+        rootView.btnadd.setOnClickListener {
 
             lifecycleScope.launch {
                 gameDB.gameInterface().insertPerson(PersonEntity(picture = bitmap?.let { it1 ->
@@ -316,9 +273,9 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener , CropIma
                 }, name = "Mother"))
 
             }
-//            startActivity(Intent(this,GameLevelsActivity::class.java))
+            startActivity(Intent(this,GameLevelsActivity::class.java))
         }
-        pickerDialog.show()
+        dialog.show()
     }
 
     private fun choosePhotoFromGallary() {

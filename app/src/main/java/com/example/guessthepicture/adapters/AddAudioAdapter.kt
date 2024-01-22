@@ -27,7 +27,7 @@ class AddAudioAdapter(var audioList: ArrayList<PersonEntity>, var onclick:itemCl
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvFileName.setText(audioList[position].audioRecord)
+//        holder.tvFileName.setText(audioList[position].audioRecord)
         holder.itemView.setOnClickListener{
 
             onclick.onItemClick(position, audioList[position].audioRecord)
@@ -49,7 +49,7 @@ class AddAudioAdapter(var audioList: ArrayList<PersonEntity>, var onclick:itemCl
     }
 
     override fun getItemCount(): Int {
-        return audioList.size
+        return 3
     }
 
     interface itemClickListener {

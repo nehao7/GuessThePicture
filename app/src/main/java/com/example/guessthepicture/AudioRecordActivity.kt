@@ -16,15 +16,16 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.guessthepicture.adapters.AddAudioAdapter
 import com.example.guessthepicture.adapters.AddPhotoAdapter
-import com.example.guessthepicture.adapters.AudioListAdapter
 import com.example.guessthepicture.databinding.ActivityAudioRecordBinding
 import com.example.guessthepicture.databinding.AudioRecordLayoutBinding
 import com.example.guessthepicture.databinding.AudioRecordOptionBinding
 import com.example.guessthepicture.roomdb.GameDB
 import com.example.guessthepicture.roomdb.PersonEntity
+import kotlinx.coroutines.launch
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.ObjectOutputStream
@@ -53,25 +54,25 @@ class AudioRecordActivity : AppCompatActivity() {
                 // same time, respect the user's decision. Don't link to system
                 // settings in an effort to convince the user to change their
                 // decision.
-                var alertDialog = AlertDialog.Builder(this)
+              /*  var alertDialog = AlertDialog.Builder(this)
                 alertDialog.apply {
                     setTitle("Permission required")
                     setMessage("Permission required to run the app")
                     setCancelable(false)
                     setPositiveButton("Ok"){_,_-> openSettings()}
                 }
-                alertDialog.show()
+                alertDialog.show()*/
             }
         }
 
-    private fun openSettings() {
+/*    private fun openSettings() {
         val intent = Intent(
             Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
         )
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
-    }
+    }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAudioRecordBinding.inflate(layoutInflater)
@@ -80,7 +81,20 @@ class AudioRecordActivity : AppCompatActivity() {
         adapter = AddAudioAdapter(list,
             object : AddAudioAdapter.itemClickListener{
                 override fun onItemClick(position: Int, audio: String) {
+                    if(!mediaPlayer.isPlaying){
+                        mediaPlayer.reset()
+                        mediaPlayer.apply {
+                            setDataSource(audio)
+                            prepare()
+                            start()
+                        }
+                        Log.d("Position State", "$position 1")
+//            adapter.updatePosition(position, 1)
+                    }else{
+                        mediaPlayer.pause()
+//            adapter.updatePosition(position, 0)
 
+                    }
                 }
             })
         gameDB = GameDB.getDatabase(this)
@@ -101,13 +115,32 @@ class AudioRecordActivity : AppCompatActivity() {
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 ShowDialog()
+                val simpleDateFormat = SimpleDateFormat("DD-MM-yyyy_mm.ss.hh")
+                val date = simpleDateFormat.format(Date())
+                var dirPath = "${externalCacheDir?.absolutePath}/"
+                var filename = "audio_record_$date"
+                recorder.apply {
+                    setAudioSource(MediaRecorder.AudioSource.MIC)
+                    setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                    setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                    setOutputFile("$dirPath$filename.mp3")
+
+                    try {
+                        prepare()
+                        start()
+                    } catch (e: IOException) {
+
+                    }
+                }
             }
+        }
+        binding.btnplayGame.setOnClickListener {
+            startActivity(Intent(this,FWNLevel1Activity::class.java))
         }
 
         getAudioFiles()
         mediaPlayer.setOnCompletionListener {
 //            adapter.updatePosition(-1, 0)
-
         }
     }
 
@@ -152,19 +185,10 @@ class AudioRecordActivity : AppCompatActivity() {
             }
 
 
-            class saveRecording:  AsyncTask<Void, Void, Void>(){
-                override fun doInBackground(vararg p0: Void?): Void? {
-                    gameDB.gameInterface().getAllPersons()
-                    return null
-                }
-
-                override fun onPostExecute(result: Void?) {
-                    super.onPostExecute(result)
-                    dialog.dismiss()
-                    getAudioFiles()
-                }
+            lifecycleScope.launch {
+                list.addAll( gameDB.gameInterface().getAllPersons())
             }
-            saveRecording().execute()
+
 
         }
         dialogBinding.btnCancel.setOnClickListener {
@@ -176,35 +200,10 @@ class AudioRecordActivity : AppCompatActivity() {
 
     fun getAudioFiles(){
         list.clear()
-        class getFiles:  AsyncTask<Void, Void, Void>(){
-            override fun doInBackground(vararg p0: Void?): Void? {
-                list.addAll(gameDB.gameInterface().getAllPersons())
-                return null
-            }
-
-            override fun onPostExecute(result: Void?) {
-                super.onPostExecute(result)
-//                adapter.notifyDataSetChanged()
-            }
-        }
-        getFiles().execute()
+       lifecycleScope.launch {
+           list.addAll(gameDB.gameInterface().getAllPersons())
+       }
     }
 
-    override fun onItemClickListener(position: Int, data: AudioRecord) {
-        if(!mediaPlayer.isPlaying){
-            mediaPlayer.reset()
-            mediaPlayer.apply {
-                setDataSource(data.filePath)
-                prepare()
-                start()
-            }
-            Log.d("Position State", "$position 1")
-//            adapter.updatePosition(position, 1)
-        }else{
-            mediaPlayer.pause()
-//            adapter.updatePosition(position, 0)
-
-        }
-    }
 
 }

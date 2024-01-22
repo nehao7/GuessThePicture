@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
     tools:context=".AudioRecordActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcList"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
-        android:id="@+id/rcList"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +27,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/fabAdd"
+        android:src="@drawable/baseline_playlist_add_24"
         android:layout_margin="10dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnplayGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play Game"
+        android:layout_margin="10dp"
+        android:textColor="@color/white"
+        android:background="@drawable/roundbutton"
+        app:layout_constraintTop_toBottomOf="@+id/rcList"
+        android:layout_marginTop="30dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,7 +21,7 @@ class GameLevelsActivity : AppCompatActivity() {
             onBackPressed()
         }
         binding.Game3.setOnClickListener {
-            startActivity(Intent(this,FWNLevel1Activity::class.java))
+            startActivity(Intent(this,AudioRecordActivity::class.java))
             onBackPressed()
         }
 
