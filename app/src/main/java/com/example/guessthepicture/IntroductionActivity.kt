@@ -4,12 +4,14 @@ import android.R.attr
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +25,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.canhub.cropper.CropImage
@@ -49,8 +52,19 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
     var view:View?=null
     lateinit var gameDB : GameDB
     var photoDisplayViewItemBinding: PhotoDisplayViewItemBinding ?= null
+    private val TAG = "IntroductionActivity"
 
 //    val rootView =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
+
+    private var getPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+        if(it){
+            cropImage.launch(CropImageContractOptions(uri = null,
+                cropImageOptions = CropImageOptions(
+                    imageSourceIncludeCamera = false,
+                    imageSourceIncludeGallery = true,
+                ),))
+        }
+    }
 
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
@@ -60,6 +74,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
             captureImgUri=result!!.originalUri
             var galleryUri = result.uriContent
             bitmap = result.bitmap
+            Log.e(TAG, " bitmap $bitmap ${result.bitmap} $result captureImgUri $captureImgUri $galleryUri $uriContent")
             photoDisplayViewItemBinding?.img?.setImageURI(galleryUri)
 
         } else {
@@ -108,11 +123,17 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     private fun cropImageLaunch() {
-        cropImage.launch(CropImageContractOptions(uri = null,
-            cropImageOptions = CropImageOptions(
-                imageSourceIncludeCamera = false,
-                imageSourceIncludeGallery = true,
-            ),))
+
+        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        {
+            cropImage.launch(CropImageContractOptions(uri = null,
+                cropImageOptions = CropImageOptions(
+                    imageSourceIncludeCamera = false,
+                    imageSourceIncludeGallery = true,
+                ),))
+        }else{
+            getPermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
     }
     private fun photopickerdialog() {
         var dialog = Dialog(this)
@@ -144,7 +165,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
                 data.addAll(gameDB.gameInterface().getAllPersons())
             }
 
-            startActivity(Intent(this,GameLevelsActivity::class.java))
+           // startActivity(Intent(this,GameLevelsActivity::class.java))
         }
         dialog.show()
     }
