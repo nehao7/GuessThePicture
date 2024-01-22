@@ -12,6 +12,8 @@ class GameLevelsActivity : AppCompatActivity() {
         binding= ActivityGameLevelsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        getSupportActionBar()?.hide()
+
         binding.Game1.setOnClickListener {
             startActivity(Intent(this,Level1Activity::class.java))
             onBackPressed()

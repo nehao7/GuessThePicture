@@ -16,6 +16,9 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.guessthepicture.databinding.ActivityFwnlevel1Binding
+import com.example.guessthepicture.databinding.CongratsDialogueBinding
+import com.example.guessthepicture.databinding.PhotoDisplayViewItemBinding
+import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 
 class FWNLevel1Activity : AppCompatActivity() {
     lateinit var binding:ActivityFwnlevel1Binding
@@ -25,6 +28,8 @@ class FWNLevel1Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityFwnlevel1Binding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        getSupportActionBar()?.hide()
 
         binding.imgmotheroriginal.setOnLongClickListener { v ->
             val dragShadowBuilder = View.DragShadowBuilder(v)
@@ -41,9 +46,8 @@ class FWNLevel1Activity : AppCompatActivity() {
                         // Perform actions when the view is dropped on the target
 
                         val builder = AlertDialog.Builder(this)
-                        val inflater = layoutInflater
-                        val rootView: View = inflater.inflate(R.layout.congrats_dialogue, null)
-                        builder.setView(rootView)
+                        val rootView=CongratsDialogueBinding.inflate(layoutInflater)
+                        builder.setView(rootView.root)
                         builder.setCancelable(true)
                         pickerDialog = builder.create()
                         val lp2 = WindowManager.LayoutParams()
@@ -55,8 +59,7 @@ class FWNLevel1Activity : AppCompatActivity() {
                         lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
                         window.attributes = lp2
                         val dialogWindow: Window = pickerDialog.getWindow()!!
-
-                        rootView.findViewById<Button>(R.id.btnLevel2).setOnClickListener {
+                        rootView.btnLevel2.setOnClickListener {
                             startActivity(Intent(this,FWNLevel2Activity::class.java))
                             onBackPressed()
                         }
@@ -81,7 +84,22 @@ class FWNLevel1Activity : AppCompatActivity() {
                     val droppedView = event.localState as View
                     if (v ==  binding.tvfather) {
                         // Perform actions when the view is dropped on the target
-                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
+                        var dialog = Dialog(this)
+                        val rootView =  TryAgainDialogueBinding.inflate(layoutInflater)
+                        dialog.setContentView(rootView.root)
+                        dialog.setCancelable(true)
+                        val lp2 = WindowManager.LayoutParams()
+                        val window: Window = dialog.getWindow()!!
+                        dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        lp2.copyFrom(window.attributes)
+                        //This makes the dialog take up the full width
+                        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
+                        lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                        window.attributes = lp2
+                        val dialogWindow: Window = dialog.getWindow()!!
+                        dialogWindow.setGravity(Gravity.CENTER)
+                        dialog.show()
+//                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
 //                        binding.imgmother.text = "Dropped!"
                     }
 

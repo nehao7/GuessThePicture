@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.guessthepicture.databinding.ActivityLevel2Binding
+import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 
 class Level2Activity : AppCompatActivity() {
 
@@ -26,6 +27,8 @@ class Level2Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityLevel2Binding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        getSupportActionBar()?.hide()
 
         binding.imgmotheroriginal.setOnLongClickListener { v ->
             val dragShadowBuilder = View.DragShadowBuilder(v)
@@ -39,8 +42,8 @@ class Level2Activity : AppCompatActivity() {
                     // Handle the drop
                     val droppedView = event.localState as View
                     if (v ==  binding.imgbrother) {
-
-                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
+                        showtryAgain()
+//                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
                     }
 
                 }
@@ -55,7 +58,8 @@ class Level2Activity : AppCompatActivity() {
                     val droppedView = event.localState as View
                     if (v ==  binding.imgfather) {
                         // Perform actions when the view is dropped on the target
-                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
+                        showtryAgain()
+//                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
 //                        binding.imgmother.text = "Dropped!"
                     }
 
@@ -97,13 +101,33 @@ class Level2Activity : AppCompatActivity() {
 //                        binding.imgmother.text = "Dropped!"
                     }
                     else{
-                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
+                        showtryAgain()
+
+//                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             true
         }
 
+    }
+
+    private fun showtryAgain(){
+        var dialog = Dialog(this)
+        val rootView =  TryAgainDialogueBinding.inflate(layoutInflater)
+        dialog.setContentView(rootView.root)
+        dialog.setCancelable(true)
+        val lp2 = WindowManager.LayoutParams()
+        val window: Window = dialog.getWindow()!!
+        dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        lp2.copyFrom(window.attributes)
+        //This makes the dialog take up the full width
+        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
+        lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
+        window.attributes = lp2
+        val dialogWindow: Window = dialog.getWindow()!!
+        dialogWindow.setGravity(Gravity.CENTER)
+        dialog.show()
     }
 
     override fun onBackPressed() {

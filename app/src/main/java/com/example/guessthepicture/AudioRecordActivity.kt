@@ -78,7 +78,9 @@ class AudioRecordActivity : AppCompatActivity() {
         binding = ActivityAudioRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = AddAudioAdapter(list,
+    getSupportActionBar()?.hide()
+
+    adapter = AddAudioAdapter(list,
             object : AddAudioAdapter.itemClickListener{
                 override fun onItemClick(position: Int, audio: String) {
                     if(!mediaPlayer.isPlaying){
@@ -93,7 +95,6 @@ class AudioRecordActivity : AppCompatActivity() {
                     }else{
                         mediaPlayer.pause()
 //            adapter.updatePosition(position, 0)
-
                     }
                 }
             })
@@ -183,17 +184,12 @@ class AudioRecordActivity : AppCompatActivity() {
             for (i in list.indices){
                 record.audioRecord=list[i].audioRecord
             }
-
-
             lifecycleScope.launch {
                 list.addAll( gameDB.gameInterface().getAllPersons())
             }
-
-
         }
         dialogBinding.btnCancel.setOnClickListener {
             dialog.dismiss()
-
         }
         dialog.show()
     }

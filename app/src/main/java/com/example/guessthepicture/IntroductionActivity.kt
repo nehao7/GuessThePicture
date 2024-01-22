@@ -43,7 +43,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener , CropIma
     lateinit var binding: ActivityIntroductionBinding
     private lateinit var pickerDialog: Dialog
     lateinit var addPhotoAdapter: AddPhotoAdapter
-    var data: ArrayList<PersonEntity>?=ArrayList()
+    var data= ArrayList<PersonEntity>()
     var captureImgUri:Uri?=null
     var imgview:ImageView?=null
     private val PIC_CROP = 101
@@ -133,6 +133,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener , CropIma
         setContentView(binding.root)
        // setSupportActionBar(binding.toolbar)
         initviews()
+        getSupportActionBar()?.hide()
 
         lifecycleScope.launch {
             var data = gameDB.gameInterface().getAllPersons()
@@ -167,8 +168,6 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener , CropIma
                     }, name = "Mother"))
 
                 }
-
-
             startActivity(Intent(this,GameLevelsActivity::class.java))
         }
     }
@@ -271,8 +270,11 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener , CropIma
                         it1
                     )
                 }, name = "Mother"))
-
             }
+            lifecycleScope.launch {
+                data.addAll(gameDB.gameInterface().getAllPersons())
+            }
+
             startActivity(Intent(this,GameLevelsActivity::class.java))
         }
         dialog.show()
