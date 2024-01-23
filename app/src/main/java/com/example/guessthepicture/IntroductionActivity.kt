@@ -44,6 +44,8 @@ import com.canhub.cropper.CropImageOptions
 import com.example.guessthepicture.adapters.AddPhotoAdapter
 import com.example.guessthepicture.databinding.ActivityIntroductionBinding
 import com.example.guessthepicture.databinding.PhotoDisplayViewItemBinding
+import com.example.guessthepicture.viewModels.GamesViewModel
+import androidx.lifecycle.ViewModelProvider
 
 
 class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
@@ -60,6 +62,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
     var galleryUri:Uri?=null
     var photoDisplayViewItemBinding: PhotoDisplayViewItemBinding ?= null
     private val TAG = "IntroductionActivity"
+    var gamesViewModel : GamesViewModel ?= null
 
 //    val rootView =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
 
@@ -149,12 +152,12 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
             addPhotoAdapter.notifyDataSetChanged()
         }
 
-        taskViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
-        taskViewModel.taskList.observe(this
+        gamesViewModel = ViewModelProvider(this)[GamesViewModel::class.java]
+        gamesViewModel?.personList?.observe(this
         ) { t ->
-            taskList.clear()
-            taskList.addAll(t as ArrayList<Task>)
-            listAdapter.updateList(taskList)
+            data.clear()
+            data.addAll(t as ArrayList<PersonEntity>)
+            addPhotoAdapter.notifyDataSetChanged()
         }
 
     }
