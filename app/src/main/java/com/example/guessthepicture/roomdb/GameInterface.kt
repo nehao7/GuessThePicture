@@ -1,5 +1,6 @@
 package com.example.guessthepicture.roomdb
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -12,8 +13,8 @@ interface GameInterface {
     suspend fun insertPerson(personEntity: PersonEntity)
 
     @Query("Select * from PersonEntity")
-    suspend fun getAllPersons() : List<PersonEntity>
+    fun getAllPersons() : LiveData<List<PersonEntity>>
 
     @Update
-        suspend fun updatePerson(personEntity:PersonEntity)
+    suspend fun updatePerson(personEntity:PersonEntity)
 }
