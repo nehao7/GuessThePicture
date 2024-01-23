@@ -64,50 +64,37 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
 //    val rootView =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
 
     private fun checkPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val requiredPermissions = arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.READ_MEDIA_IMAGES,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.CAMERA
-            )
-
-            val permissionsToRequest = mutableListOf<String>()
-
-            for (permission in requiredPermissions) {
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        permission
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    permissionsToRequest.add(permission)
-                }
-            }
-
-            if (permissionsToRequest.isNotEmpty()) {
-                // Request the permissions
-                ActivityCompat.requestPermissions(
-                    this,
-                    permissionsToRequest.toTypedArray(),
-                    media_request_code
-                )
-            } else {
-
-            }
-        } else {
-            // Permissions are granted at install time on versions prior to Android 6.0
-            // Do something here
+        var permission = if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S)
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        else{
+            Manifest.permission.READ_MEDIA_IMAGES
         }
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            getPermission.launch(permission)
+        } else{
+            launchCropImage()
+        }
+
+
     }
 
     private var getPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         if(it){
-            cropImage.launch(CropImageContractOptions(uri = null,
-                cropImageOptions = CropImageOptions(
-                    imageSourceIncludeCamera = true,
-                    imageSourceIncludeGallery = true,
-                ),))
+            launchCropImage()
         }
+    }
+
+    fun launchCropImage(){
+        cropImage.launch(CropImageContractOptions(uri = null,
+            cropImageOptions = CropImageOptions(
+                imageSourceIncludeCamera = true,
+                imageSourceIncludeGallery = true,
+            ),))
     }
 
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
@@ -134,7 +121,6 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
         binding = ActivityIntroductionBinding.inflate(layoutInflater)
         setContentView(binding.root)
        // setSupportActionBar(binding.toolbar)
-        checkPermissions()
         initviews()
         getSupportActionBar()?.hide()
 
@@ -187,26 +173,22 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     private fun cropImageLaunch() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                cropImage.launch(
-                    CropImageContractOptions(
-                        uri = null,
-                        cropImageOptions = CropImageOptions(
-                            imageSourceIncludeCamera = true,
-                            imageSourceIncludeGallery = true,
-                        ),
-                    )
-                )
-            } else {
-                getPermission.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
+        var permission = if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S)
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        else{
+            Manifest.permission.READ_MEDIA_IMAGES
         }
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            launchCropImage()
+        } else {
+                    getPermission.launch(permission)
+                }
+
+
     }
     private fun photopickerdialog() {
         var dialog = Dialog(this)
@@ -227,11 +209,6 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
         }
         photoDisplayViewItemBinding?.btnaddImage?.setOnClickListener {
         print("bitmap $bitmap")
-//            lifecycleScope.launch {
-//                gameDB.gameInterface().insertPerson(PersonEntity(picture = galleryUri.toString()
-//                , name = "Mother"))
-//            }
-
             lifecycleScope.launch {
                 gameDB.gameInterface().insertPerson(PersonEntity(picture = galleryUri.toString()
                 , name = "Mother"))
@@ -243,10 +220,6 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
 
 
             }
-
-
-
-            // startActivity(Intent(this,GameLevelsActivity::class.java))
         }
         dialog.show()
     }
