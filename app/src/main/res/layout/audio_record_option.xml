@@ -1,22 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
     android:orientation="horizontal">
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/startRecord"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Record"
+        android:layout_marginTop="30dp"
+       />
 
-    <Button
-        android:id="@+id/btnSave"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/stoprecord"
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Pause"
+        android:layout_marginTop="30dp"
+       />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPlayRecordRecord"
         android:layout_weight="1"
-        android:layout_margin="10dp"
-        android:text="Save" />
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Cancel" />
+        android:text="play recording"
+        android:layout_marginTop="30dp"
+        />
+
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="Save" />
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel" />
+    </LinearLayout>
+
 </LinearLayout>

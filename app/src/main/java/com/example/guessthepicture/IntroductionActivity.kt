@@ -149,13 +149,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
             addPhotoAdapter.notifyDataSetChanged()
         }
 
-        taskViewModel = ViewModelProvider(this)[TaskViewModel::class.java]
-        taskViewModel.taskList.observe(this
-        ) { t ->
-            taskList.clear()
-            taskList.addAll(t as ArrayList<Task>)
-            listAdapter.updateList(taskList)
-        }
+
 
     }
 
