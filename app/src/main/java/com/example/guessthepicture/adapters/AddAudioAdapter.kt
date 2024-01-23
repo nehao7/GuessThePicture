@@ -39,6 +39,7 @@ class AddAudioAdapter(var audioList: ArrayList<PersonEntity>, var onclick:itemCl
         }else{
             holder.ibPlayPause.setImageResource(R.drawable.baseline_play_circle_24)
         }
+//        updatePosition(audioList[position].id,state)
     }
 
     fun updatePosition(position: Int, state: Int) {
