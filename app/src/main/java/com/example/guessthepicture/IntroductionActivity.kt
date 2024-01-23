@@ -185,14 +185,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
         photoDisplayViewItemBinding =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
         dialog.setContentView(photoDisplayViewItemBinding!!.root)
         dialog.setCancelable(true)
-        val lp2 = WindowManager.LayoutParams()
-        val window: Window = dialog.getWindow()!!
-        //This makes the dialog take up the full width
-        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
-        lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
-        window.attributes = lp2
-        val dialogWindow: Window = dialog.getWindow()!!
-        dialogWindow.setGravity(Gravity.CENTER)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         photoDisplayViewItemBinding?.img?.setOnClickListener {
             checkPermissions()
 
