@@ -41,7 +41,7 @@ class AudioRecordActivity : AppCompatActivity() {
     private lateinit var recorder: MediaRecorder
     private var mediaPlayer =  MediaPlayer()
     lateinit var adapter: AddAudioAdapter
-
+    var audiofile=""
     var audioPermission =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -116,23 +116,7 @@ class AudioRecordActivity : AppCompatActivity() {
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 ShowDialog()
-                val simpleDateFormat = SimpleDateFormat("DD-MM-yyyy_mm.ss.hh")
-                val date = simpleDateFormat.format(Date())
-                var dirPath = "${externalCacheDir?.absolutePath}/"
-                var filename = "audio_record_$date"
-                recorder.apply {
-                    setAudioSource(MediaRecorder.AudioSource.MIC)
-                    setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-                    setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-                    setOutputFile("$dirPath$filename.mp3")
 
-                    try {
-                        prepare()
-                        start()
-                    } catch (e: IOException) {
-
-                    }
-                }
             }
         }
         binding.btnplayGame.setOnClickListener {
@@ -156,18 +140,32 @@ class AudioRecordActivity : AppCompatActivity() {
         val date = simpleDateFormat.format(Date())
         var filename = "audio_record_$date"
 
-        recorder.apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-            setOutputFile("$dirPath$filename.mp3")
+         audiofile = "$dirPath$filename.mp3"
+        dialogBinding.startRecord.setOnClickListener {
+            recorder.apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                setOutputFile("$dirPath$filename.mp3")
 
-            try {
-                prepare()
-                start()
-            } catch (e: IOException) {
+                try {
+                    prepare()
+                    start()
+                } catch (e: IOException) {
 
+                }
             }
+
+        }
+
+        dialogBinding.stoprecord.setOnClickListener {
+            recorder.stop()
+        }
+
+        dialogBinding.btnPlayRecordRecord.setOnClickListener {
+            mediaPlayer.setDataSource("$dirPath$filename.mp3")
+            mediaPlayer.prepare()
+            mediaPlayer.start()
         }
         dialogBinding.btnSave.setOnClickListener {
             recorder.stop()
