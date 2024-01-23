@@ -182,9 +182,6 @@ class AudioRecordActivity : AppCompatActivity() {
             for (i in list.indices){
                 record.audioRecord=list[i].audioRecord
             }
-            lifecycleScope.launch {
-                list.addAll( gameDB.gameInterface().getAllPersons())
-            }
         }
         dialogBinding.btnCancel.setOnClickListener {
             dialog.dismiss()
@@ -194,9 +191,7 @@ class AudioRecordActivity : AppCompatActivity() {
 
     fun getAudioFiles(){
         list.clear()
-       lifecycleScope.launch {
-           list.addAll(gameDB.gameInterface().getAllPersons())
-       }
+
     }
 
 

@@ -6,36 +6,38 @@ import androidx.lifecycle.LiveData
 import com.example.guessthepicture.roomdb.GameDB
 import com.example.guessthepicture.roomdb.GameRepository
 import com.example.guessthepicture.roomdb.PersonEntity
+import kotlinx.coroutines.Dispatchers
 
 class GamesViewModel(application: Application): AndroidViewModel(application) {
-    val taskList: LiveData<List<PersonEntity>>
+    val personList: LiveData<List<PersonEntity>>
 
     private val repository:GameRepository
     init {
-        val taskDao=GameDB.getDatabase(application).gameInterface().getAllPersons()
+        val taskDao=GameDB.getDatabase(application).gameInterface()
         repository= GameRepository(taskDao)
-        taskList=repository.readAllData
+        personList=repository.readAllData
     }
-    fun insertTask(task: Task){
+
+   /* fun insertPerson(task: PersonEntity){
         viewModelScope.launch (Dispatchers.IO) {
-            repository.insertTask(task)
+            repository(task)
 
         }
     }
-    fun updateTask(task: Task){
+    fun updateTask(task: PersonEntity){
         viewModelScope.launch (Dispatchers.IO) {
-            repository.updateTask(task)
+            repository.updatePerson(task)
 
         }
     }
-    fun deleteTask(task: Task){
+    fun deletePerson(task: PersonEntity){
         viewModelScope.launch (Dispatchers.IO) {
-            repository.removeTask(task)
+            repository.removePerson(task)
 
         }
-    }
+    }*/
 
-    fun getTask(): LiveData<List<Task>> {
-        return taskList
+    fun getPerson(): LiveData<List<PersonEntity>> {
+        return personList
     }
 }
