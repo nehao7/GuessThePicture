@@ -1,31 +1,18 @@
 package com.example.guessthepicture
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.WindowManager
-import com.example.guessthepicture.databinding.ActivityMainBinding
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import com.example.guessthepicture.roomdb.PersonEntity
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding:ActivityMainBinding
+    var data= ArrayList<PersonEntity>()
+    lateinit var navController : NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        getSupportActionBar()?.hide()
-
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, IntroductionActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, 3000)
+        setContentView(R.layout.activity_main)
+        navController = findNavController(R.id.navController)
     }
 }

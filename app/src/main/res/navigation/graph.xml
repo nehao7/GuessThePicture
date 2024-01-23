@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graph.xml"
+    app:startDestination="@id/introductionActivity2">
+    <fragment
+        android:id="@+id/introductionActivity2"
+        android:name="com.example.guessthepicture.IntroductionFragment"
+        android:label="activity_introduction"
+        tools:layout="@layout/fragment_introduction" />
+    <fragment
+        android:id="@+id/gameLevelsFragment"
+        android:name="com.example.guessthepicture.GameLevelsFragment"
+        android:label="activity_game_levels"
+        tools:layout="@layout/activity_game_levels" />
+    <fragment
+        android:id="@+id/matchImagesL1Fragment"
+        android:name="com.example.guessthepicture.MatchImagesL1Fragment"
+        android:label="fragment_match_images_l1"
+        tools:layout="@layout/fragment_match_images_l1" />
+</navigation>

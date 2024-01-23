@@ -4,10 +4,12 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -15,19 +17,41 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.example.guessthepicture.databinding.ActivityLevel1Binding
+import androidx.fragment.app.Fragment
+import com.example.guessthepicture.databinding.FragmentMatchImagesL1Binding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
+import kotlin.random.Random
 
-class Level1Activity : AppCompatActivity() {
-    lateinit var binding:ActivityLevel1Binding
+class MatchImagesL1Fragment : Fragment() {
+    lateinit var binding: FragmentMatchImagesL1Binding
     private lateinit var pickerDialog: Dialog
+    lateinit var mainActivity: MainActivity
+    var randomNumber = 0
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mainActivity = activity as MainActivity
+        binding= FragmentMatchImagesL1Binding.inflate(layoutInflater)
+        return binding.root
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityLevel1Binding.inflate(layoutInflater)
-        setContentView(binding.root)
+    }
 
-        getSupportActionBar()?.hide()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        randomNumber = Random.nextInt(mainActivity.data.size)
+        binding.imgmotheroriginal.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
+        binding.imgmother.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
+        var nextNumber = Random.nextInt(mainActivity.data.size)
+        while(randomNumber == nextNumber ){
+            nextNumber = Random.nextInt(mainActivity.data.size)
+        }
 
+        binding.imgfather.setImageURI(Uri.parse(mainActivity.data[nextNumber].picture))
         binding.imgmotheroriginal.setOnLongClickListener { v ->
             val dragShadowBuilder = View.DragShadowBuilder(v)
             v.startDragAndDrop(null, dragShadowBuilder, v, 0)
@@ -42,7 +66,7 @@ class Level1Activity : AppCompatActivity() {
                     if (v == binding.imgmother) {
                         // Perform actions when the view is dropped on the target
 
-                        val builder = AlertDialog.Builder(this)
+                        val builder = AlertDialog.Builder(mainActivity)
                         val inflater = layoutInflater
                         val rootView: View = inflater.inflate(R.layout.congrats_dialogue, null)
                         builder.setView(rootView)
@@ -59,8 +83,7 @@ class Level1Activity : AppCompatActivity() {
                         val dialogWindow: Window = pickerDialog.getWindow()!!
 
                         rootView.findViewById<Button>(R.id.btnLevel2).setOnClickListener {
-                            startActivity(Intent(this,Level2Activity::class.java))
-                            onBackPressed()
+
                         }
                         val lp = dialogWindow.attributes
                         dialogWindow.setGravity(Gravity.CENTER)
@@ -69,7 +92,7 @@ class Level1Activity : AppCompatActivity() {
 //                        binding.imgmother.text = "Dropped!"
                     }
                     else{
-                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mainActivity, "Try Again", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -94,12 +117,12 @@ class Level1Activity : AppCompatActivity() {
         }
 
         binding.btnNext.setOnClickListener{
-            startActivity(Intent(this,Level2Activity::class.java))
+          //  startActivity(Intent(this,Level2Activity::class.java))
         }
     }
 
     private fun showtryAgain(){
-        var dialog = Dialog(this)
+        var dialog = Dialog(mainActivity)
         val rootView =  TryAgainDialogueBinding.inflate(layoutInflater)
         dialog.setContentView(rootView.root)
         dialog.setCancelable(true)
@@ -116,9 +139,4 @@ class Level1Activity : AppCompatActivity() {
         dialog.show()
     }
 
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
-    }
 }

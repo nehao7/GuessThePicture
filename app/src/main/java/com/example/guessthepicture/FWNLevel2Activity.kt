@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.guessthepicture.databinding.ActivityFwnlevel2Binding
@@ -129,7 +128,7 @@ class FWNLevel2Activity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this,GameLevelsActivity::class.java))
+        startActivity(Intent(this,GameLevelsFragment::class.java))
         finish()
     }
 }
