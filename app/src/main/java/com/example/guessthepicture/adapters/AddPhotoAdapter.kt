@@ -32,7 +32,8 @@ class AddPhotoAdapter(var context: Context,
 
     override fun onBindViewHolder(holder: AddPhotoAdapter.ViewHolder, position: Int) {
         holder.apply {
-//                binding.img.setImageURI(Uri.parse(data!![position].picture))
+                binding.img.setImageURI(Uri.parse(data[position].picture))
+            binding.addname.setText(data[position].name?:"")
                 Log.e("imgAdded", "onBindViewHolder:$data")
             imgview.viewHandler(binding.img)
         }
@@ -41,7 +42,7 @@ class AddPhotoAdapter(var context: Context,
     }
 
     override fun getItemCount(): Int {
-        return 6
+        return data.size
 
     }
 

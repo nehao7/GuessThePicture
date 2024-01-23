@@ -56,22 +56,20 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
     var captureImgUri:Uri?=null
     var bitmap : Bitmap ? = null
     var view:View?=null
-    var imgid=0
     lateinit var gameDB : GameDB
-    var media_request_code=101
     var galleryUri:Uri?=null
     var photoDisplayViewItemBinding: PhotoDisplayViewItemBinding ?= null
     private val TAG = "IntroductionActivity"
     var gamesViewModel : GamesViewModel ?= null
-
+    var permission = if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S)
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    else{
+        Manifest.permission.READ_MEDIA_IMAGES
+    }
 //    val rootView =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
 
     private fun checkPermissions() {
-        var permission = if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S)
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        else{
-            Manifest.permission.READ_MEDIA_IMAGES
-        }
+
 
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -95,7 +93,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
     fun launchCropImage(){
         cropImage.launch(CropImageContractOptions(uri = null,
             cropImageOptions = CropImageOptions(
-                imageSourceIncludeCamera = true,
+                imageSourceIncludeCamera = false,
                 imageSourceIncludeGallery = true,
             ),))
     }
@@ -135,22 +133,12 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
         addPhotoAdapter = AddPhotoAdapter(this,data,
             object :AddPhotoAdapter.ViewHandler{
                 override fun viewHandler(position: ImageView) {
-                    for (a in data.indices){
-                        position.setImageURI(Uri.parse(data[a].picture))
-                    }
-//                addPhotoAdapter.notifyDataSetChanged()
+
                 }
 
             })
         addPhotoAdapter.notifyDataSetChanged()
         binding.recycleraddphoto.adapter = addPhotoAdapter
-
-
-        lifecycleScope.launch {
-            data = gameDB.gameInterface().getAllPersons() as ArrayList<PersonEntity>
-            println("data from room database  $data")
-            addPhotoAdapter.notifyDataSetChanged()
-        }
 
         gamesViewModel = ViewModelProvider(this)[GamesViewModel::class.java]
         gamesViewModel?.personList?.observe(this
@@ -166,12 +154,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
         binding.tvadd.setOnClickListener(this)
 
         binding.btnSave.setOnClickListener {
-            lifecycleScope.launch {
-                data.add(PersonEntity(imgid,galleryUri.toString(),"Mother"))
-                Log.e("entitylist", "initviews: "+data )
-            }
-
-            startActivity(Intent(this,GameLevelsActivity::class.java))
+           startActivity(Intent(this,GameLevelsActivity::class.java))
         }
     }
 
@@ -185,11 +168,6 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
     }
 
     private fun cropImageLaunch() {
-        var permission = if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S)
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        else{
-            Manifest.permission.READ_MEDIA_IMAGES
-        }
         if (ContextCompat.checkSelfPermission(
                 this,
                 permission
@@ -216,7 +194,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
         val dialogWindow: Window = dialog.getWindow()!!
         dialogWindow.setGravity(Gravity.CENTER)
         photoDisplayViewItemBinding?.img?.setOnClickListener {
-            cropImageLaunch()
+            checkPermissions()
 
         }
         photoDisplayViewItemBinding?.btnaddImage?.setOnClickListener {
@@ -224,12 +202,7 @@ class IntroductionActivity : AppCompatActivity(), View.OnClickListener{
             lifecycleScope.launch {
                 gameDB.gameInterface().insertPerson(PersonEntity(picture = galleryUri.toString()
                 , name = "Mother"))
-                for (i in data.indices){
-                  imgid=data[i].id
-                }
-                data.add(PersonEntity(imgid,galleryUri.toString(),"Mother"))
-                Log.e("entitylist", "initviews: "+data )
-
+                dialog.dismiss()
 
             }
         }
