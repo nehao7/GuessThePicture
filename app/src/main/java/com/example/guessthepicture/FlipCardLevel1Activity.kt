@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -18,10 +19,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.example.guessthepicture.databinding.ActivityFlipCardLevel1Binding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 
-class FlipCardLevel1Activity : AppCompatActivity() {
+class FlipCardLevel1Activity : Fragment() {
     lateinit var binding : ActivityFlipCardLevel1Binding
     lateinit var front_anim: AnimatorSet
     lateinit var back_anim: AnimatorSet
@@ -32,16 +34,23 @@ class FlipCardLevel1Activity : AppCompatActivity() {
     var isFrontMother =true
     var isFrontFather =true
     var isFrontBrother=true
+    lateinit var mainActivity : MainActivity
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mainActivity = activity as MainActivity
         binding = ActivityFlipCardLevel1Binding.inflate(layoutInflater)
-        setContentView(binding.root)
+        return binding.root
+    }
 
-        getSupportActionBar()?.hide()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        var scale = applicationContext.resources.displayMetrics.density
+
+        var scale = mainActivity.resources.displayMetrics.density
 
         val frontmother = binding.imgmother as ImageView
         val backmother = binding.imgmotherback as ImageView
@@ -58,20 +67,20 @@ class FlipCardLevel1Activity : AppCompatActivity() {
         backfather.cameraDistance = 8000 * scale
 
         front_anim = AnimatorInflater.loadAnimator(
-            applicationContext,
+            mainActivity,
             R.animator.front_flip_anim
         ) as AnimatorSet
         back_anim = AnimatorInflater.loadAnimator(
-            applicationContext,
+            mainActivity,
             R.animator.back_flip_animator
         ) as AnimatorSet
 
         front_anim_father = AnimatorInflater.loadAnimator(
-            applicationContext,
+            mainActivity,
             R.animator.front_flip_anim
         ) as AnimatorSet
         back_anim_father= AnimatorInflater.loadAnimator(
-            applicationContext,
+            mainActivity,
             R.animator.back_flip_animator
         ) as AnimatorSet
 
@@ -132,7 +141,7 @@ class FlipCardLevel1Activity : AppCompatActivity() {
                     if (v == binding.imgmother) {
                         // Perform actions when the view is dropped on the target
 
-                        val builder = AlertDialog.Builder(this)
+                        val builder = AlertDialog.Builder(mainActivity)
                         val inflater = layoutInflater
                         val rootView: View = inflater.inflate(R.layout.congrats_dialogue, null)
                         builder.setView(rootView)
@@ -149,17 +158,18 @@ class FlipCardLevel1Activity : AppCompatActivity() {
                         val dialogWindow: Window = pickerDialog.getWindow()!!
 
                         rootView.findViewById<Button>(R.id.btnLevel2).setOnClickListener {
-                            startActivity(Intent(this,FlipCardLevel2Activity::class.java))
-                            onBackPressed()
+                            pickerDialog.dismiss()
+                            mainActivity.navController.navigate(R.id.flipCardLevel2Activity)
+
                         }
                         val lp = dialogWindow.attributes
                         dialogWindow.setGravity(Gravity.CENTER)
                         pickerDialog.show()
-//                        Toast.makeText(this, "Congratulations", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(mainActivity, "Congratulations", Toast.LENGTH_SHORT).show()
 //                        binding.imgmother.text = "Dropped!"
                     }
                     else{
-                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mainActivity, "Try Again", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -174,7 +184,7 @@ class FlipCardLevel1Activity : AppCompatActivity() {
                     if (v ==  binding.imgfather) {
                         // Perform actions when the view is dropped on the target
                         showtryAgain()
-//                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(mainActivity, "Try Again", Toast.LENGTH_SHORT).show()
 //                        binding.imgmother.text = "Dropped!"
                     }
 
@@ -182,11 +192,15 @@ class FlipCardLevel1Activity : AppCompatActivity() {
             }
             true
         }
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
 
     }
 
     private fun showtryAgain(){
-        var dialog = Dialog(this)
+        var dialog = Dialog(mainActivity)
         val rootView =  TryAgainDialogueBinding.inflate(layoutInflater)
         dialog.setContentView(rootView.root)
         dialog.setCancelable(true)

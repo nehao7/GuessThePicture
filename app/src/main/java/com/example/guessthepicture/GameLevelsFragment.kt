@@ -29,6 +29,8 @@ class GameLevelsFragment : Fragment() {
 
         }
         binding.Game2.setOnClickListener {
+            mainActivity.navController.navigate(R.id.flipCardLevel1Activity)
+
 //            startActivity(Intent(this,FlipCardLevel1Activity::class.java))
         }
         binding.Game3.setOnClickListener {

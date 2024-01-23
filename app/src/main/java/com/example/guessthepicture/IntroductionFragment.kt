@@ -98,8 +98,8 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         binding.recycleraddphoto.layoutManager = GridLayoutManager(mainActivity,3)
         addPhotoAdapter = AddPhotoAdapter(mainActivity,mainActivity.data,
             object :AddPhotoAdapter.ViewHandler{
-                override fun viewHandler(position: ImageView) {
-
+                override fun viewHandler(personEntity: PersonEntity, position: Int) {
+                    photopickerdialog(position)
                 }
 
             })
@@ -155,11 +155,10 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
             R.id.tvadd->{
                photopickerdialog()
             }
-
         }
     }
 
-    private fun photopickerdialog() {
+    private fun photopickerdialog(position: Int = -1) {
         var dialog = Dialog(mainActivity)
         photoDisplayViewItemBinding =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
         dialog.setContentView(photoDisplayViewItemBinding!!.root)
@@ -167,13 +166,29 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         photoDisplayViewItemBinding?.img?.setOnClickListener {
             checkPermissions()
+        }
 
+        photoDisplayViewItemBinding?.imgDelete?.setOnClickListener{
+            dialog.dismiss()
+        }
+
+        if(position == -1){
+            photoDisplayViewItemBinding?.img?.setImageResource(R.mipmap.img_place_holder)
+        }else{
+            photoDisplayViewItemBinding?.img?.setImageURI(Uri.parse(mainActivity.data[position].picture))
         }
         photoDisplayViewItemBinding?.btnaddImage?.setOnClickListener {
         print("bitmap $bitmap")
             lifecycleScope.launch {
-                gameDB.gameInterface().insertPerson(PersonEntity(picture = galleryUri.toString()
-                , name = "Mother"))
+               if(position > -1){
+                   gameDB.gameInterface().updatePerson(PersonEntity(
+                       id=mainActivity.data[position].id,
+                       picture = galleryUri.toString(),
+                       name = photoDisplayViewItemBinding?.addname?.text?.toString()?:""))
+               }else{
+                   gameDB.gameInterface().insertPerson(PersonEntity(picture = galleryUri.toString(),
+                       name = photoDisplayViewItemBinding?.addname?.text?.toString()?:""))
+               }
                 dialog.dismiss()
 
             }

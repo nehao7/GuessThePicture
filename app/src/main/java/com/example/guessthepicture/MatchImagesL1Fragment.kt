@@ -52,6 +52,7 @@ class MatchImagesL1Fragment : Fragment() {
         }
 
         binding.imgfather.setImageURI(Uri.parse(mainActivity.data[nextNumber].picture))
+        print("nextNumber $nextNumber randomNumber $randomNumber")
         binding.imgmotheroriginal.setOnLongClickListener { v ->
             val dragShadowBuilder = View.DragShadowBuilder(v)
             v.startDragAndDrop(null, dragShadowBuilder, v, 0)

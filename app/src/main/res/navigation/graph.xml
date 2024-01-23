@@ -19,4 +19,14 @@
         android:name="com.example.guessthepicture.MatchImagesL1Fragment"
         android:label="fragment_match_images_l1"
         tools:layout="@layout/fragment_match_images_l1" />
+    <fragment
+        android:id="@+id/flipCardLevel1Activity"
+        android:name="com.example.guessthepicture.FlipCardLevel1Activity"
+        android:label="activity_flip_card_level1"
+        tools:layout="@layout/activity_flip_card_level1" />
+    <fragment
+        android:id="@+id/flipCardLevel2Activity"
+        android:name="com.example.guessthepicture.FlipCardLevel2Activity"
+        android:label="activity_flip_card_level2"
+        tools:layout="@layout/activity_flip_card_level2" />
 </navigation>

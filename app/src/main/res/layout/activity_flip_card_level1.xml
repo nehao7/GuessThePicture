@@ -20,13 +20,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgmotheroriginal"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="156dp"
         android:src="@drawable/mother"
+        android:scaleType="fitXY"
+        app:shapeAppearanceOverlay="@style/corner_shape"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
@@ -41,11 +43,13 @@
         android:layout_marginEnd="80dp"
         tools:layout_editor_absoluteX="156dp"
         tools:layout_editor_absoluteY="70dp" />
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgmotherback"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/roundbutton"
+        android:scaleType="fitXY"
+        app:shapeAppearanceOverlay="@style/topHalfCircle"
+        tools:background="@drawable/roundbutton"
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp"
@@ -62,13 +66,15 @@
         android:background="@mipmap/img_place_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgmother" />
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgfatherback"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="132dp"
         android:layout_marginEnd="80dp"
-        android:background="@drawable/roundbutton"
+        tools:background="@drawable/roundbutton"
+        android:scaleType="fitXY"
+        app:shapeAppearanceOverlay="@style/topHalfCircle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgmother" />
 
