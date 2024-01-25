@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.DragEvent
@@ -22,6 +23,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.guessthepicture.databinding.ActivityFlipCardLevel1Binding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
+import kotlin.random.Random
 
 class FlipCardLevel1Activity : Fragment() {
     lateinit var binding : ActivityFlipCardLevel1Binding
@@ -35,6 +37,8 @@ class FlipCardLevel1Activity : Fragment() {
     var isFrontFather =true
     var isFrontBrother=true
     lateinit var mainActivity : MainActivity
+    var randomNumber = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +52,18 @@ class FlipCardLevel1Activity : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        randomNumber = Random.nextInt(mainActivity.data.size)
+        binding.imgmotheroriginal.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
+        binding.imgmother.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
+
+        var nextNumber = Random.nextInt(mainActivity.data.size)
+        while(randomNumber == nextNumber ){
+            nextNumber = Random.nextInt(mainActivity.data.size)
+        }
+
+        binding.imgfather.setImageURI(Uri.parse(mainActivity.data[nextNumber].picture))
+        print("nextNumber $nextNumber randomNumber $randomNumber")
+
 
 
         var scale = mainActivity.resources.displayMetrics.density
@@ -58,6 +74,7 @@ class FlipCardLevel1Activity : Fragment() {
         val frontfather = binding.imgfather as ImageView
         val backfather = binding.imgfatherback as ImageView
 
+
         val flip = binding.btnFlip as Button
 
         frontmother.cameraDistance = 8000 * scale
@@ -65,6 +82,8 @@ class FlipCardLevel1Activity : Fragment() {
 
         frontfather.cameraDistance = 8000 * scale
         backfather.cameraDistance = 8000 * scale
+
+
 
         front_anim = AnimatorInflater.loadAnimator(
             mainActivity,
@@ -123,7 +142,6 @@ class FlipCardLevel1Activity : Fragment() {
 
 
         }
-
 
 
 
@@ -209,7 +227,7 @@ class FlipCardLevel1Activity : Fragment() {
         dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         lp2.copyFrom(window.attributes)
         //This makes the dialog take up the full width
-        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
+        lp2.width = ViewGroup.LayoutParams.WRAP_CONTENT
         lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
         window.attributes = lp2
         val dialogWindow: Window = dialog.getWindow()!!

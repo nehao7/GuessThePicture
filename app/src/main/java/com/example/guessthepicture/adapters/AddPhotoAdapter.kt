@@ -35,10 +35,9 @@ class AddPhotoAdapter(var context: Context,
             binding.img.setImageURI(Uri.parse(data[position].picture))
             binding.addname.setText(data[position].name?:"")
             binding.addname.isEnabled = false
-          //  binding.addname. = false
-                Log.e("imgAdded", "onBindViewHolder:$data")
-            imgview.viewHandler(data[position], position)
+            imgview.viewHandler(data[position], position,binding.btnaddAudio,binding.imgDelete)
             binding.btnaddImage.visibility = View.GONE
+//            binding.btnaddAudio.visibility=View.VISIBLE
         }
 //        notifyDataSetChanged()
 
@@ -50,7 +49,7 @@ class AddPhotoAdapter(var context: Context,
     }
 
     interface ViewHandler {
-        fun viewHandler(personEntity: PersonEntity, position: Int)
+        fun viewHandler(personEntity: PersonEntity, position: Int,view: View,imageView: ImageView)
     }
 
 

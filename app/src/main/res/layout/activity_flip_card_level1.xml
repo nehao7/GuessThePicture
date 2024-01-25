@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/imgmotheroriginal"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -36,20 +36,18 @@
         android:id="@+id/imgmother"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/mother"
+        tools:src="@drawable/mother"
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
         tools:layout_editor_absoluteX="156dp"
         tools:layout_editor_absoluteY="70dp" />
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/imgmotherback"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:scaleType="fitXY"
-        app:shapeAppearanceOverlay="@style/topHalfCircle"
-        tools:background="@drawable/roundbutton"
+        android:background="@drawable/roundbutton"
         app:layout_constraintTop_toBottomOf="@+id/title"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp"
@@ -63,18 +61,17 @@
         android:layout_height="100dp"
         android:layout_marginTop="132dp"
         android:layout_marginEnd="80dp"
-        android:background="@mipmap/img_place_holder"
+        app:shapeAppearanceOverlay="@style/topHalfCircle"
+        tools:background="@mipmap/img_place_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgmother" />
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/imgfatherback"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="132dp"
         android:layout_marginEnd="80dp"
-        tools:background="@drawable/roundbutton"
-        android:scaleType="fitXY"
-        app:shapeAppearanceOverlay="@style/topHalfCircle"
+        android:background="@drawable/roundbutton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgmother" />
 

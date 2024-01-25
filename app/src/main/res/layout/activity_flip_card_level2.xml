@@ -36,7 +36,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
-        android:background="@mipmap/img_place_holder"
+        android:src="@mipmap/img_place_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgbrother" />
     <ImageView
@@ -55,7 +55,7 @@
         android:layout_height="100dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
-        android:background="@mipmap/img_place_holder"
+        android:src="@mipmap/img_place_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
     <ImageView

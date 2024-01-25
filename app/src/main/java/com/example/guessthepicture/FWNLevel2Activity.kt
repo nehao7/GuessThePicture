@@ -8,25 +8,37 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.example.guessthepicture.databinding.ActivityFwnlevel2Binding
 import com.example.guessthepicture.databinding.CongratsDialogueBinding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 
-class FWNLevel2Activity : AppCompatActivity() {
+class FWNLevel2Activity:Fragment() {
     lateinit var binding: ActivityFwnlevel2Binding
     private lateinit var pickerDialog: Dialog
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding= ActivityFwnlevel2Binding.inflate(layoutInflater)
-        setContentView(binding.root)
+    lateinit var mainActivity: MainActivity
 
-        getSupportActionBar()?.hide()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mainActivity = activity as MainActivity
+        binding= ActivityFwnlevel2Binding.inflate(layoutInflater)
+        return (binding.root)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+//        getSupportActionBar()?.hide()
 
         binding.imgmotheroriginal.setOnLongClickListener { v ->
             val dragShadowBuilder = View.DragShadowBuilder(v)
@@ -73,7 +85,7 @@ class FWNLevel2Activity : AppCompatActivity() {
                     val droppedView = event.localState as View
                     if (v == binding.tvmother) {
 
-                        val builder = AlertDialog.Builder(this)
+                        val builder = AlertDialog.Builder(mainActivity)
                         val rootView = CongratsDialogueBinding.inflate(layoutInflater)
                         builder.setView(rootView.root)
                         builder.setCancelable(true)
@@ -83,7 +95,7 @@ class FWNLevel2Activity : AppCompatActivity() {
                         pickerDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
                         lp2.copyFrom(window.attributes)
                         //This makes the dialog take up the full width
-                        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
+                        lp2.width = ViewGroup.LayoutParams.WRAP_CONTENT
                         lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
                         window.attributes = lp2
                         val dialogWindow: Window = pickerDialog.getWindow()!!
@@ -98,18 +110,24 @@ class FWNLevel2Activity : AppCompatActivity() {
 //                        binding.imgmother.text = "Dropped!"
                     }
                     else{
-                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mainActivity, "Try Again", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             true
         }
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+
 
 
     }
 
     private fun showtryAgain(){
-        var dialog = Dialog(this)
+        var dialog = Dialog(mainActivity)
         val rootView =  TryAgainDialogueBinding.inflate(layoutInflater)
         dialog.setContentView(rootView.root)
         dialog.setCancelable(true)
@@ -118,7 +136,7 @@ class FWNLevel2Activity : AppCompatActivity() {
         dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         lp2.copyFrom(window.attributes)
         //This makes the dialog take up the full width
-        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
+        lp2.width = ViewGroup.LayoutParams.WRAP_CONTENT
         lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
         window.attributes = lp2
         val dialogWindow: Window = dialog.getWindow()!!
@@ -126,9 +144,5 @@ class FWNLevel2Activity : AppCompatActivity() {
         dialog.show()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        startActivity(Intent(this,GameLevelsFragment::class.java))
-        finish()
-    }
+
 }

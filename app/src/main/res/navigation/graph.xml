@@ -8,25 +8,81 @@
         android:id="@+id/introductionActivity2"
         android:name="com.example.guessthepicture.IntroductionFragment"
         android:label="activity_introduction"
-        tools:layout="@layout/fragment_introduction" />
+        tools:layout="@layout/fragment_introduction" >
+        <action
+            android:id="@+id/action_introductionActivity2_to_gameLevelsFragment"
+            app:destination="@id/gameLevelsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/gameLevelsFragment"
         android:name="com.example.guessthepicture.GameLevelsFragment"
         android:label="activity_game_levels"
-        tools:layout="@layout/activity_game_levels" />
+        tools:layout="@layout/activity_game_levels" >
+        <action
+            android:id="@+id/action_gameLevelsFragment_to_matchImagesL1Fragment"
+            app:destination="@id/matchImagesL1Fragment" />
+        <action
+            android:id="@+id/action_gameLevelsFragment_to_flipCardLevel1Activity"
+            app:destination="@id/flipCardLevel1Activity" />
+        <action
+            android:id="@+id/action_gameLevelsFragment_to_FWNLevel1Activity"
+            app:destination="@id/FWNLevel1Activity" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/Level2Activity"
+        android:name="com.example.guessthepicture.Level2Activity"
+        android:label="activty_level2"
+        tools:layout="@layout/activity_level2">
+
+        <action
+            android:id="@+id/action_Level2Activity_to_gameLevelsFragment2"
+            app:destination="@id/gameLevelsFragment"
+            app:popUpTo="@id/gameLevelsFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
     <fragment
         android:id="@+id/matchImagesL1Fragment"
         android:name="com.example.guessthepicture.MatchImagesL1Fragment"
         android:label="fragment_match_images_l1"
-        tools:layout="@layout/fragment_match_images_l1" />
+        tools:layout="@layout/fragment_match_images_l1" >
+        <action
+            android:id="@+id/action_matchImagesL1Fragment_to_Level2Activity"
+            app:destination="@id/Level2Activity"
+            app:popUpToInclusive="false"
+            app:popUpTo="@id/gameLevelsFragment"/>
+    </fragment>
     <fragment
         android:id="@+id/flipCardLevel1Activity"
         android:name="com.example.guessthepicture.FlipCardLevel1Activity"
         android:label="activity_flip_card_level1"
-        tools:layout="@layout/activity_flip_card_level1" />
+        tools:layout="@layout/activity_flip_card_level1" >
+        <action
+            android:id="@+id/action_flipCardLevel1Activity_to_flipCardLevel2Activity"
+            app:destination="@id/flipCardLevel2Activity" />
+    </fragment>
     <fragment
         android:id="@+id/flipCardLevel2Activity"
         android:name="com.example.guessthepicture.FlipCardLevel2Activity"
         android:label="activity_flip_card_level2"
         tools:layout="@layout/activity_flip_card_level2" />
+
+    <fragment
+        android:id="@+id/FWNLevel1Activity"
+        android:name="com.example.guessthepicture.FWNLevel1Activity"
+        android:label="activity_fwnlevel1"
+        tools:layout="@layout/activity_fwnlevel1">
+        <action
+            android:id="@+id/action_FWNLevel1Activity_to_FWNLevel2Activity"
+            app:destination="@id/FWNLevel2Activity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FWNLevel2Activity"
+        android:name="com.example.guessthepicture.FWNLevel2Activity"
+        android:label="activity_fwnlevel2"
+        tools:layout="@layout/activity_fwnlevel2"/>
+
 </navigation>

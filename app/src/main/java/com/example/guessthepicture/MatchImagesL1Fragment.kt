@@ -18,6 +18,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.guessthepicture.databinding.FragmentMatchImagesL1Binding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 import kotlin.random.Random
@@ -26,7 +27,8 @@ class MatchImagesL1Fragment : Fragment() {
     lateinit var binding: FragmentMatchImagesL1Binding
     private lateinit var pickerDialog: Dialog
     lateinit var mainActivity: MainActivity
-    var randomNumber = 0
+    var firstrandomNumber = 0
+    var secondrandomNumber=0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,16 +45,16 @@ class MatchImagesL1Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        randomNumber = Random.nextInt(mainActivity.data.size)
-        binding.imgmotheroriginal.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
-        binding.imgmother.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
+        firstrandomNumber = Random.nextInt(mainActivity.data.size)
+        binding.imgmotheroriginal.setImageURI(Uri.parse(mainActivity.data[firstrandomNumber].picture))
+        binding.imgmother.setImageURI(Uri.parse(mainActivity.data[firstrandomNumber].picture))
         var nextNumber = Random.nextInt(mainActivity.data.size)
-        while(randomNumber == nextNumber ){
+        while(firstrandomNumber == nextNumber ){
             nextNumber = Random.nextInt(mainActivity.data.size)
         }
 
         binding.imgfather.setImageURI(Uri.parse(mainActivity.data[nextNumber].picture))
-        print("nextNumber $nextNumber randomNumber $randomNumber")
+        print("nextNumber $nextNumber randomNumber $firstrandomNumber")
         binding.imgmotheroriginal.setOnLongClickListener { v ->
             val dragShadowBuilder = View.DragShadowBuilder(v)
             v.startDragAndDrop(null, dragShadowBuilder, v, 0)
@@ -67,30 +69,13 @@ class MatchImagesL1Fragment : Fragment() {
                     if (v == binding.imgmother) {
                         // Perform actions when the view is dropped on the target
 
-                        val builder = AlertDialog.Builder(mainActivity)
-                        val inflater = layoutInflater
-                        val rootView: View = inflater.inflate(R.layout.congrats_dialogue, null)
-                        builder.setView(rootView)
-                        builder.setCancelable(true)
-                        pickerDialog = builder.create()
-                        val lp2 = WindowManager.LayoutParams()
-                        val window: Window = pickerDialog.getWindow()!!
-                        pickerDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-                        lp2.copyFrom(window.attributes)
-                        //This makes the dialog take up the full width
-                        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
-                        lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                        window.attributes = lp2
-                        val dialogWindow: Window = pickerDialog.getWindow()!!
+                        GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, object : ClickInterface{
+                            override fun onButtonCLick() {
+                                mainActivity.navController.navigate(R.id.action_matchImagesL1Fragment_to_Level2Activity)
+                            }
+                        })
 
-                        rootView.findViewById<Button>(R.id.btnLevel2).setOnClickListener {
 
-                        }
-                        val lp = dialogWindow.attributes
-                        dialogWindow.setGravity(Gravity.CENTER)
-                        pickerDialog.show()
-//                        Toast.makeText(this, "Congratulations", Toast.LENGTH_SHORT).show()
-//                        binding.imgmother.text = "Dropped!"
                     }
                     else{
                         Toast.makeText(mainActivity, "Try Again", Toast.LENGTH_SHORT).show()

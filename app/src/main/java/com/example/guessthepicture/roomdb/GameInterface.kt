@@ -2,6 +2,7 @@ package com.example.guessthepicture.roomdb
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -17,4 +18,7 @@ interface GameInterface {
 
     @Update
     suspend fun updatePerson(personEntity:PersonEntity)
+
+    @Delete
+    suspend fun deletePerson(personEntity: PersonEntity)
 }

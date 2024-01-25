@@ -5,8 +5,10 @@ import android.animation.AnimatorSet
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.DragEvent
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -21,6 +23,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.guessthepicture.databinding.ActivityFlipCardLevel2Binding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
+import kotlin.random.Random
 
 class FlipCardLevel2Activity : Fragment() {
     lateinit var binding: ActivityFlipCardLevel2Binding
@@ -37,17 +40,72 @@ class FlipCardLevel2Activity : Fragment() {
     var isFrontFather=true
     var isFrontBrother=true
     lateinit var mainActivity: MainActivity
+    var randomNumber=0
+    var firstrandomNumber=0
+    var secondrandomNumber=0
+    var thirdrandomNumber=0
 
+    var randomNumbers = mutableListOf<Int>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        mainActivity = activity as MainActivity
         binding= ActivityFlipCardLevel2Binding.inflate(layoutInflater)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        firstrandomNumber = generateNonRepeatingRandomNumber()
+        var nextNumber = generateNonRepeatingRandomNumber()
+        binding.imgmotheroriginal.setImageURI(Uri.parse(mainActivity.data[firstrandomNumber].picture))
+        binding.imgmother.setImageURI(Uri.parse(mainActivity.data[firstrandomNumber].picture))
+        Log.e("random", "firstrandom: nextNumber $nextNumber randomNumber $firstrandomNumber ", )
+
+
+        secondrandomNumber = generateNonRepeatingRandomNumber()
+        while(firstrandomNumber == nextNumber ){
+            nextNumber = generateNonRepeatingRandomNumber()
+        }
+        while( secondrandomNumber == firstrandomNumber ){
+            secondrandomNumber = generateNonRepeatingRandomNumber()
+        }
+//        thirdrandomNumber=generateRandomNumber()
+        thirdrandomNumber = generateNonRepeatingRandomNumber(firstrandomNumber,secondrandomNumber)
+        while (thirdrandomNumber==secondrandomNumber){
+            thirdrandomNumber=generateNonRepeatingRandomNumber()
+        }
+
+        binding.imgfather.setImageURI(Uri.parse(mainActivity.data[secondrandomNumber].picture))
+        Log.e("random", "firstrandom: nextNumber $firstrandomNumber randomNumber $secondrandomNumber ", )
+
+        binding.imgbrother.setImageURI(Uri.parse(mainActivity.data[thirdrandomNumber].picture))
+        Log.e("random", "Secondrandom: nextNumber $secondrandomNumber randomNumber $thirdrandomNumber ", )
+
+
+
+        randomNumber = Random.nextInt(mainActivity.data.size)
+        binding.imgmotheroriginal.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
+        binding.imgmother.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
+
+////        var nextNumber = Random.nextInt(mainActivity.data.size)
+//        var secondRandom = Random.nextInt(mainActivity.data.size)
+//        while(randomNumber == nextNumber ){
+//            nextNumber = Random.nextInt(mainActivity.data.size)
+//        }
+//        while(secondRandom == nextNumber && secondRandom == randomNumber ){
+//            secondRandom = Random.nextInt(mainActivity.data.size)
+//        }
+//
+//        binding.imgfather.setImageURI(Uri.parse(mainActivity.data[nextNumber].picture))
+//        print("nextNumber $nextNumber randomNumber $randomNumber")
+//
+//        binding.imgbrother.setImageURI(Uri.parse(mainActivity.data[secondRandom].picture))
+//        print("nextNumber $nextNumber randomNumber $randomNumber")
+
+
         var scale = mainActivity.resources.displayMetrics.density
 
         val frontmother = binding.imgmother as ImageView
@@ -65,6 +123,9 @@ class FlipCardLevel2Activity : Fragment() {
 
         frontfather.cameraDistance = 8000 * scale
         backfather.cameraDistance = 8000 * scale
+
+        frontbrother.cameraDistance = 8000 * scale
+        backbrother.cameraDistance = 8000 * scale
 
         front_anim = AnimatorInflater.loadAnimator(
             mainActivity,
@@ -234,9 +295,28 @@ class FlipCardLevel2Activity : Fragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainActivity = activity as MainActivity
-        binding= ActivityFlipCardLevel2Binding.inflate(layoutInflater)
 
+//        binding= ActivityFlipCardLevel2Binding.inflate(layoutInflater)
+
+    }
+
+    private fun generateNonRepeatingRandomNumber(excludeNumber1: Int? = -1,excludeNumber2: Int? = -1): Int {
+        val totalImages = mainActivity.data.size
+        if (randomNumbers.size == totalImages) {
+            // If all numbers are used, clear the list to start again
+            randomNumbers.clear()
+        }
+
+        var randomNumber: Int
+        do {
+            // Generate a random number until a non-repeating one is found
+            randomNumber = Random.nextInt(totalImages)
+        } while (randomNumbers.contains(randomNumber) || randomNumber == excludeNumber1)
+
+        // Add the number to the list to ensure it's not repeated
+        randomNumbers.add(randomNumber)
+
+        return randomNumber
     }
 
     private fun showtryAgain(){

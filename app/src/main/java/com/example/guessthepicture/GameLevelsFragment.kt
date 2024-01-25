@@ -24,7 +24,7 @@ class GameLevelsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.Game1.setOnClickListener {
-            mainActivity.navController.navigate(R.id.matchImagesL1Fragment)
+            mainActivity.navController.navigate(R.id.action_gameLevelsFragment_to_matchImagesL1Fragment)
            // startActivity(Intent(this,MatchImagesL1Fragment::class.java))
 
         }
@@ -34,6 +34,7 @@ class GameLevelsFragment : Fragment() {
 //            startActivity(Intent(this,FlipCardLevel1Activity::class.java))
         }
         binding.Game3.setOnClickListener {
+//            mainActivity.navController.navigate(R.id.FWNLevel1Activity)
 //            startActivity(Intent(this,AudioRecordActivity::class.java))
         }
     }
