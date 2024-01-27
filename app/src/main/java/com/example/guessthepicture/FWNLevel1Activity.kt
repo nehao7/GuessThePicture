@@ -56,7 +56,7 @@ class FWNLevel1Activity : Fragment(){
                     val droppedView = event.localState as View
                     if (v == binding.tvmother) {
                         // Perform actions when the view is dropped on the target
-                        GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, object : ClickInterface{
+                        GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, fragment = FWNLevel1Activity(), object : ClickInterface{
                             override fun onButtonCLick() {
                                 mainActivity.navController.navigate(R.id.action_FWNLevel1Activity_to_FWNLevel2Activity)
                             }

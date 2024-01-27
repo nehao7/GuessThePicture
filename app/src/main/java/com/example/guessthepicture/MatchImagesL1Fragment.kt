@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.guessthepicture.databinding.ActivityLevel2Binding
 import com.example.guessthepicture.databinding.FragmentMatchImagesL1Binding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 import kotlin.random.Random
@@ -69,9 +70,11 @@ class MatchImagesL1Fragment : Fragment() {
                     if (v == binding.imgmother) {
                         // Perform actions when the view is dropped on the target
 
-                        GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, object : ClickInterface{
+                        GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, fragment = Level2Activity(),
+                            object : ClickInterface{
                             override fun onButtonCLick() {
                                 mainActivity.navController.navigate(R.id.action_matchImagesL1Fragment_to_Level2Activity)
+
                             }
                         })
 
@@ -92,13 +95,17 @@ class MatchImagesL1Fragment : Fragment() {
                     val droppedView = event.localState as View
                     if (v ==  binding.imgfather) {
                         // Perform actions when the view is dropped on the target
-//                        GeneralFunctions.showDialog(mainActivity,layoutInflater,DialogType.sad,
-//                            object :ClickInterface{
-//                                override fun onButtonCLick() {
-//                                }
-//
-//                            })
-                        showtryAgain()
+                        GeneralFunctions.showDialog(mainActivity,layoutInflater,DialogType.sad, fragment = MatchImagesL1Fragment(),
+                            object :ClickInterface{
+                                override fun onButtonCLick() {
+
+
+                                }
+
+                            })
+
+
+//                        showtryAgain()
 //                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
 //                        binding.imgmother.text = "Dropped!"
                     }

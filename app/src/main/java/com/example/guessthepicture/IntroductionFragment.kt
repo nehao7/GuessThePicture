@@ -271,7 +271,7 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         dialogBinding.btnPlayRecordRecord.setOnClickListener {
             mediaPlayer.reset()
             mediaPlayer.apply {
-                setDataSource(audiofile)
+                setDataSource("$audiofile.mp3")
                 prepare()
                 start()
             }

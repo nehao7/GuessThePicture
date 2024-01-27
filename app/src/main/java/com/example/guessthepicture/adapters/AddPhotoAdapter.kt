@@ -37,7 +37,7 @@ class AddPhotoAdapter(var context: Context,
             binding.addname.isEnabled = false
             imgview.viewHandler(data[position], position,binding.btnaddAudio,binding.imgDelete)
             binding.btnaddImage.visibility = View.GONE
-//            binding.btnaddAudio.visibility=View.VISIBLE
+            binding.btnaddAudio.visibility=View.VISIBLE
         }
 //        notifyDataSetChanged()
 

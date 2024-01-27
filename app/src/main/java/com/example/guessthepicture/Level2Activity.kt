@@ -32,7 +32,6 @@ class Level2Activity : Fragment(){
     var secondrandomNumber=0
     var thirdrandomNumber=0
     lateinit var congratsDialogueBinding: CongratsDialogueBinding
-
     var randomNumbers = mutableListOf<Int>()
 
 
@@ -124,29 +123,13 @@ class Level2Activity : Fragment(){
                     // Handle the drop
                     val droppedView = event.localState as View
                     if (v == binding.imgmother) {
+                            GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, fragment = Level2Activity(),object : ClickInterface{
 
-//                        GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy,congratsDialogueBinding.btnLevel2,object : ClickInterface{
-//                            override fun onButtonCLick() {
-//                                mainActivity.navController.popBackStack()
-//
-//                            }
-//                        })
-                        var dialog = Dialog(mainActivity)
-                        val rootView =  CongratsDialogueBinding.inflate(layoutInflater)
-                        dialog.setContentView(rootView.root)
-                        dialog.setCancelable(true)
-                        val lp2 = WindowManager.LayoutParams()
-                        val window: Window = dialog.getWindow()!!
-                        dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-                        lp2.copyFrom(window.attributes)
-                        //This makes the dialog take up the full width
-                        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
-                        lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                        window.attributes = lp2
-                        val dialogWindow: Window = dialog.getWindow()!!
-                        rootView.btnLevel2.visibility=View.GONE
-                        dialogWindow.setGravity(Gravity.CENTER)
-                        dialog.show()
+                                override fun onButtonCLick() {
+                                    mainActivity.navController.popBackStack()
+                                }
+                            })
+
                     }
                     else{
                         showtryAgain()
