@@ -61,13 +61,21 @@
         tools:layout="@layout/activity_flip_card_level1" >
         <action
             android:id="@+id/action_flipCardLevel1Activity_to_flipCardLevel2Activity"
-            app:destination="@id/flipCardLevel2Activity" />
+            app:destination="@id/flipCardLevel2Activity"
+            app:popUpToInclusive="false"
+            app:popUpTo="@id/gameLevelsFragment"/>
     </fragment>
     <fragment
         android:id="@+id/flipCardLevel2Activity"
         android:name="com.example.guessthepicture.FlipCardLevel2Activity"
         android:label="activity_flip_card_level2"
-        tools:layout="@layout/activity_flip_card_level2" />
+        tools:layout="@layout/activity_flip_card_level2" >
+        <action
+            android:id="@+id/flipCardLevel2Activity_to_gameLevelsFragment"
+            app:destination="@id/gameLevelsFragment"
+            app:popUpToInclusive="false"
+            app:popUpTo="@id/gameLevelsFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/FWNLevel1Activity"
@@ -76,13 +84,22 @@
         tools:layout="@layout/activity_fwnlevel1">
         <action
             android:id="@+id/action_FWNLevel1Activity_to_FWNLevel2Activity"
-            app:destination="@id/FWNLevel2Activity" />
+            app:destination="@id/FWNLevel2Activity"
+            app:popUpToInclusive="false"
+            app:popUpTo="@id/gameLevelsFragment"/>
     </fragment>
 
     <fragment
         android:id="@+id/FWNLevel2Activity"
         android:name="com.example.guessthepicture.FWNLevel2Activity"
         android:label="activity_fwnlevel2"
-        tools:layout="@layout/activity_fwnlevel2"/>
+        tools:layout="@layout/activity_fwnlevel2">
+
+        <action
+            android:id="@+id/action_FWNLevel2Activity_to_gameLevelsFragment"
+            app:destination="@id/gameLevelsFragment"
+            app:popUpTo="@id/gameLevelsFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

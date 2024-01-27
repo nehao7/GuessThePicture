@@ -92,6 +92,12 @@ class MatchImagesL1Fragment : Fragment() {
                     val droppedView = event.localState as View
                     if (v ==  binding.imgfather) {
                         // Perform actions when the view is dropped on the target
+//                        GeneralFunctions.showDialog(mainActivity,layoutInflater,DialogType.sad,
+//                            object :ClickInterface{
+//                                override fun onButtonCLick() {
+//                                }
+//
+//                            })
                         showtryAgain()
 //                        Toast.makeText(this, "Try Again", Toast.LENGTH_SHORT).show()
 //                        binding.imgmother.text = "Dropped!"

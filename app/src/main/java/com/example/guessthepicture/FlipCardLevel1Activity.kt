@@ -177,7 +177,7 @@ class FlipCardLevel1Activity : Fragment() {
 
                         rootView.findViewById<Button>(R.id.btnLevel2).setOnClickListener {
                             pickerDialog.dismiss()
-                            mainActivity.navController.navigate(R.id.flipCardLevel2Activity)
+                            mainActivity.navController.navigate(R.id.action_flipCardLevel1Activity_to_flipCardLevel2Activity)
 
                         }
                         val lp = dialogWindow.attributes

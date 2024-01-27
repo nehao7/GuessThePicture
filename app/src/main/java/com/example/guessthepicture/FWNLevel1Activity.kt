@@ -58,7 +58,7 @@ class FWNLevel1Activity : Fragment(){
                         // Perform actions when the view is dropped on the target
                         GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, object : ClickInterface{
                             override fun onButtonCLick() {
-                                mainActivity.navController.navigate(R.id.FWNLevel2Activity)
+                                mainActivity.navController.navigate(R.id.action_FWNLevel1Activity_to_FWNLevel2Activity)
                             }
                         })
 

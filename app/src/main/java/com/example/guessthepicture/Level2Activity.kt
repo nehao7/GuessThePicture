@@ -19,6 +19,7 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.guessthepicture.databinding.ActivityLevel2Binding
+import com.example.guessthepicture.databinding.CongratsDialogueBinding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 import kotlin.random.Random
 
@@ -30,6 +31,7 @@ class Level2Activity : Fragment(){
     var firstrandomNumber=0
     var secondrandomNumber=0
     var thirdrandomNumber=0
+    lateinit var congratsDialogueBinding: CongratsDialogueBinding
 
     var randomNumbers = mutableListOf<Int>()
 
@@ -123,11 +125,28 @@ class Level2Activity : Fragment(){
                     val droppedView = event.localState as View
                     if (v == binding.imgmother) {
 
-                        GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, object : ClickInterface{
-                            override fun onButtonCLick() {
-                                mainActivity.navController.popBackStack()
-                            }
-                        })
+//                        GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy,congratsDialogueBinding.btnLevel2,object : ClickInterface{
+//                            override fun onButtonCLick() {
+//                                mainActivity.navController.popBackStack()
+//
+//                            }
+//                        })
+                        var dialog = Dialog(mainActivity)
+                        val rootView =  CongratsDialogueBinding.inflate(layoutInflater)
+                        dialog.setContentView(rootView.root)
+                        dialog.setCancelable(true)
+                        val lp2 = WindowManager.LayoutParams()
+                        val window: Window = dialog.getWindow()!!
+                        dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+                        lp2.copyFrom(window.attributes)
+                        //This makes the dialog take up the full width
+                        lp2.width = ViewGroup.LayoutParams.MATCH_PARENT
+                        lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                        window.attributes = lp2
+                        val dialogWindow: Window = dialog.getWindow()!!
+                        rootView.btnLevel2.visibility=View.GONE
+                        dialogWindow.setGravity(Gravity.CENTER)
+                        dialog.show()
                     }
                     else{
                         showtryAgain()

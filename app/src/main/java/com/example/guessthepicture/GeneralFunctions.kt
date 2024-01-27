@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Base64
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
 import com.example.guessthepicture.databinding.CongratsDialogueBinding
 import java.io.ByteArrayOutputStream
 
@@ -15,6 +17,7 @@ interface ClickInterface{
 enum class DialogType{
     happy, sad
 }
+
 class GeneralFunctions {
 
     companion object{
@@ -26,16 +29,25 @@ class GeneralFunctions {
             return imageString
         }
 
-        fun showDialog(context : Context, layoutInflater: LayoutInflater, dialogType: DialogType, onClick: ClickInterface){
+        fun showDialog(context : Context, layoutInflater: LayoutInflater, dialogType: DialogType,
+//                       btn:Button ,
+                       onClick: ClickInterface){
             var dialog = Dialog(context)
             var dialogBinding = CongratsDialogueBinding.inflate(layoutInflater)
             dialog.setContentView(dialogBinding.root)
             dialog.setCancelable(false)
 
-            dialogBinding.btnLevel2.setOnClickListener {
-                dialog.dismiss()
-                onClick.onButtonCLick()
-            }
+         if (dialogType==DialogType.happy){
+//             btn.findViewById<Button>(R.id.btnLevel2)
+             dialogBinding.btnLevel2.setOnClickListener {
+                 dialog.dismiss()
+                 onClick.onButtonCLick()
+             }
+         }else if (dialogType==DialogType.sad){
+             dialogBinding.btnLevel2.visibility=View.GONE
+             dialog.setCancelable(true)
+         }
+
             dialog.show()
         }
     }

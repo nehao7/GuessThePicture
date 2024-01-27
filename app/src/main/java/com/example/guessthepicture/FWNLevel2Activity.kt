@@ -38,7 +38,7 @@ class FWNLevel2Activity:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        getSupportActionBar()?.hide()
+        mainActivity.getSupportActionBar()?.hide()
 
         binding.imgmotheroriginal.setOnLongClickListener { v ->
             val dragShadowBuilder = View.DragShadowBuilder(v)
@@ -100,6 +100,7 @@ class FWNLevel2Activity:Fragment() {
                         window.attributes = lp2
                         val dialogWindow: Window = pickerDialog.getWindow()!!
                         rootView.btnLevel2.visibility= View.GONE
+                        mainActivity.navController.popBackStack()
 //                        rootView.findViewById<Button>(R.id.btnLevel2).setOnClickListener {
 //                            startActivity(Intent(this,Level2Activity::class.java))
 //                        }
