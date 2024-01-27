@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.guessthepicture.DialogClickType
 import com.example.guessthepicture.databinding.PhotoDisplayViewItemBinding
 import com.example.guessthepicture.roomdb.GameDB
 import com.example.guessthepicture.roomdb.PersonEntity
@@ -16,7 +17,6 @@ import com.example.guessthepicture.roomdb.PersonEntity
 class AddPhotoAdapter(var context: Context,
                       var data: ArrayList<PersonEntity>,
                       var imgview: ViewHandler
-
                       ): RecyclerView.Adapter<AddPhotoAdapter.ViewHolder>() {
 //    private var onClickListener: OnClickListener? = null
 
@@ -35,9 +35,21 @@ class AddPhotoAdapter(var context: Context,
             binding.img.setImageURI(Uri.parse(data[position].picture))
             binding.addname.setText(data[position].name?:"")
             binding.addname.isEnabled = false
-            imgview.viewHandler(data[position], position,binding.btnaddAudio,binding.imgDelete)
+
             binding.btnaddImage.visibility = View.GONE
-            binding.btnaddAudio.visibility=View.VISIBLE
+            binding.btnAddAudio.visibility=View.VISIBLE
+
+            binding.img.setOnClickListener {
+                imgview.viewHandler(position, DialogClickType.Image)
+            }
+
+            binding.imgDelete.setOnClickListener {
+                imgview.viewHandler(position, DialogClickType.Delete)
+            }
+
+            binding.btnAddAudio.setOnClickListener {
+                imgview.viewHandler(position, DialogClickType.Audio)
+            }
         }
 //        notifyDataSetChanged()
 
@@ -49,7 +61,7 @@ class AddPhotoAdapter(var context: Context,
     }
 
     interface ViewHandler {
-        fun viewHandler(personEntity: PersonEntity, position: Int,view: View,imageView: ImageView)
+        fun viewHandler(position: Int, clickType: DialogClickType)
     }
 
 

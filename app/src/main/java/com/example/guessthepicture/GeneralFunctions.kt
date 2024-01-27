@@ -22,6 +22,10 @@ enum class DialogType{
 
 }
 
+enum class DialogClickType{
+    Image, Delete, Audio
+}
+
 class GeneralFunctions{
 
 

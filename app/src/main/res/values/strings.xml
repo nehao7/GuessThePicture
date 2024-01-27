@@ -3,4 +3,10 @@
     <string name="sorry">Sorry</string>
     <string name="add_atleast_three_images">Add atleast three images</string>
     <string name="ok">OK</string>
+    <string name="add_info">Add Info</string>
+    <string name="record_audio">Record Audio</string>
+    <string name="alert">Alert</string>
+    <string name="delete_person">Do you want to delete the person information?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

@@ -47,46 +47,71 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
     lateinit var binding: FragmentIntroductionBinding
     lateinit var addPhotoAdapter: AddPhotoAdapter
     private  var recorder: MediaRecorder ?= null
-    private var mediaPlayer =  MediaPlayer()
-    var audiofile=""
-    var dialog:Dialog?=null
-    var captureImgUri:Uri?=null
-    var bitmap : Bitmap ? = null
+    private var mediaPlayer = MediaPlayer()
+    private var audiofile=""
+    private var dialog:Dialog?=null
+    private var captureImgUri:Uri?=null
+    private var bitmap : Bitmap ? = null
     lateinit var gameDB : GameDB
-    var galleryUri:Uri?=null
-    var photoDisplayViewItemBinding: PhotoDisplayViewItemBinding ?= null
+    private var galleryUri:Uri?=null
+    private var photoDisplayViewItemBinding: PhotoDisplayViewItemBinding ?= null
     private val TAG = IntroductionFragment::class.java.canonicalName
     lateinit var mainActivity: MainActivity
-    var gamesViewModel : GamesViewModel ?= null
-    var permission = if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S)
+    private var gamesViewModel : GamesViewModel ?= null
+    private var allowCamera = false
+    private var allowGallery = false
+    private var mediaPermission = if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S)
         Manifest.permission.READ_EXTERNAL_STORAGE
     else{
         Manifest.permission.READ_MEDIA_IMAGES
     }
+    private var audioPermission = if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S)
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    else{
+        Manifest.permission.READ_MEDIA_AUDIO
+    }
+    private var cameraPermission = Manifest.permission.CAMERA
 
     private fun checkPermissions() {
         if (ContextCompat.checkSelfPermission(
                 mainActivity,
-                permission
+                mediaPermission
+            ) != PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(
+                mainActivity,
+                cameraPermission
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            getPermission.launch(permission)
+            getImagePermission.launch(arrayOf(mediaPermission, cameraPermission))
         } else{
+            allowGallery = true
+            allowCamera = true
             launchCropImage()
         }
     }
 
-    private var getPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+    private var getImagePermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
+        for ((key, value) in it){
+            if(key == mediaPermission){
+                allowGallery = true
+            }else if(key == cameraPermission){
+                allowCamera = true
+            }
+        }
+        launchCropImage()
+    }
+
+    private var audioPermissionRequest = registerForActivityResult(ActivityResultContracts.RequestPermission()){
         if(it){
-            launchCropImage()
+           Toast.makeText(mainActivity, mainActivity.resources.getString(R.string.record_audio), Toast.LENGTH_SHORT).show()
         }
     }
 
     fun launchCropImage(){
         cropImage.launch(CropImageContractOptions(uri = null,
             cropImageOptions = CropImageOptions(
-                imageSourceIncludeCamera = true,
-                imageSourceIncludeGallery = true,
+                imageSourceIncludeCamera = allowCamera,
+                imageSourceIncludeGallery = allowGallery,
             ),))
     }
 
@@ -120,27 +145,35 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         binding.recycleraddphoto.layoutManager = GridLayoutManager(mainActivity,3)
         addPhotoAdapter = AddPhotoAdapter(mainActivity,mainActivity.data,
             object :AddPhotoAdapter.ViewHandler{
-                override fun viewHandler(personEntity: PersonEntity, position: Int,view: View,imageView: ImageView) {
-                    view.setOnClickListener {
-                        ShowAudioDialog(position)
-                    }
+                override fun viewHandler(position: Int, clickType : DialogClickType) {
+                    when(clickType){
+                        DialogClickType.Image->{
 
-                    imageView.setOnClickListener {
-//                            lifecycleScope.launch{
-//                                gameDB.gameInterface().deletePerson(PersonEntity(mainActivity.data[position].id))
-//                                addPhotoAdapter.notifyDataSetChanged()
-//                            }
-                        Log.e("datadeleted", "viewHandler: onClick ", )
+                        }
+                        DialogClickType.Audio->{
+                            if(ContextCompat.checkSelfPermission(mainActivity, audioPermission) == PackageManager.PERMISSION_GRANTED){
+                                ShowAudioDialog(position)
 
-                        lifecycleScope.launch {
-                            gameDB.gameInterface().deletePerson(personEntity)
-                            Log.e("datadeleted", "viewHandler: ", )
+                            }else{
+                                audioPermissionRequest.launch(audioPermission)
+                            }
+
+                        }
+                        DialogClickType.Delete->{
+                            AlertDialog.Builder(mainActivity).apply {
+                                setTitle(mainActivity.resources.getString(R.string.alert))
+                                setMessage(mainActivity.resources.getString(R.string.delete_person))
+                                setPositiveButton(mainActivity.resources.getString(R.string.yes)){_,_->
+                                    lifecycleScope.launch {
+                                        gameDB.gameInterface().deletePerson(mainActivity.data[position])
+                                    }
+                                }
+                                setNegativeButton(mainActivity.resources.getString(R.string.no)){_,_->}
+                                show()
+                            }
                         }
                     }
-
-
                 }
-
             })
         addPhotoAdapter.notifyDataSetChanged()
         binding.recycleraddphoto.adapter = addPhotoAdapter
@@ -172,7 +205,10 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
     }
 
     private fun initviews() {
-        binding.tvadd.setOnClickListener(this)
+        binding.tvadd.setOnClickListener{
+            photopickerdialog()
+
+        }
 
         binding.btnSave.setOnClickListener {
             if(mainActivity.data.size < 3){
@@ -217,8 +253,14 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         var filename = "audio_record_$date"
 
 //        audiofile = "$dirPath$filename.mp3"
-        println("AUdio path $dirPath$filename.mp3")
+        println("Audio path $dirPath$filename.mp3")
+
+        if(position > -1){
+            if(mainActivity.data[position].audioRecord != null)
+                audiofile = mainActivity.data[position].audioRecord
+        }
         dialogBinding.startRecord.setOnClickListener {
+
             recorder?.apply {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
                 setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
@@ -243,29 +285,14 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
                 var out = ObjectOutputStream(fos)
                 out.close()
                 fos.close()
-            } catch (e: IOException) {
+            } catch (e: IOException) {}
 
-            }
-
-            var record = PersonEntity()
             audiofile = "$dirPath$filename"
-//            record.filePath = "$dirPath$filename.mp3"
-//            record.empsPath = "$dirPath$filename"
 
           lifecycleScope.launch {
               gameDB.gameInterface().updatePerson(PersonEntity(id = position, audioRecord = audiofile))
               Log.e( TAG, "ShowAudioDialog: $audiofile" )
-//              /storage/emulated/0/Android/data/com.example.guessthepicture/cache/audio_record_25-01-2024_53.36.02
           }
-//            recorder?.stop()
-//            try {
-//                var fos = FileOutputStream("$dirPath$filename")
-//                var out = ObjectOutputStream(fos)
-//                out.close()
-//                fos.close()
-//            } catch (e: IOException) {
-//
-//            }
         }
 
         dialogBinding.btnPlayRecordRecord.setOnClickListener {
@@ -293,6 +320,7 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         photoDisplayViewItemBinding =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
         dialog.setContentView(photoDisplayViewItemBinding!!.root)
         dialog.setCancelable(true)
+        photoDisplayViewItemBinding?.btnAddAudio?.visibility = View.GONE
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         photoDisplayViewItemBinding?.img?.setOnClickListener {
             checkPermissions()
