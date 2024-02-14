@@ -6,9 +6,13 @@ import android.graphics.Bitmap
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.example.guessthepicture.databinding.ActivityLevel2Binding
+import com.example.guessthepicture.Fragments.FWNLevel1Fragment
+import com.example.guessthepicture.Fragments.FWNLevel2Fragment
+import com.example.guessthepicture.Fragments.FlipCardLevel1Fragment
+import com.example.guessthepicture.Fragments.FlipCardLevel2Fragment
+import com.example.guessthepicture.Fragments.Level2Fragnent
+import com.example.guessthepicture.Fragments.MatchImagesL1Fragment
 import com.example.guessthepicture.databinding.CongratsDialogueBinding
 import java.io.ByteArrayOutputStream
 
@@ -50,10 +54,10 @@ class GeneralFunctions{
             dialog.setContentView(dialogBinding.root)
             dialog.setCancelable(false)
 
-            if (fragment is MatchImagesL1Fragment || fragment is FlipCardLevel1Activity||fragment is FWNLevel1Activity){
+            if (fragment is MatchImagesL1Fragment || fragment is FlipCardLevel1Fragment ||fragment is FWNLevel1Fragment){
                 dialogBinding.btnLevel2.text="Level 2"
             }
-            else if (fragment is Level2Activity|| fragment is FlipCardLevel2Activity||fragment is FWNLevel2Activity){
+            else if (fragment is Level2Fragnent || fragment is FlipCardLevel2Fragment ||fragment is FWNLevel2Fragment){
                 dialogBinding.btnLevel2.text="Exit"
             }else{
                 dialogBinding.btnLevel2.text="Level 2"

@@ -1,4 +1,4 @@
-package com.example.guessthepicture
+package com.example.guessthepicture.Fragments
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.DragEvent
@@ -21,11 +20,13 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.example.guessthepicture.MainActivity
+import com.example.guessthepicture.R
 import com.example.guessthepicture.databinding.ActivityFlipCardLevel2Binding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 import kotlin.random.Random
 
-class FlipCardLevel2Activity : Fragment() {
+class FlipCardLevel2Fragment : Fragment() {
     lateinit var binding: ActivityFlipCardLevel2Binding
     lateinit var front_anim: AnimatorSet
     lateinit var back_anim: AnimatorSet

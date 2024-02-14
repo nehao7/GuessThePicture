@@ -1,4 +1,4 @@
-package com.example.guessthepicture
+package com.example.guessthepicture.Fragments
 
 import android.Manifest
 import android.app.Dialog
@@ -7,14 +7,12 @@ import android.graphics.Bitmap
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -33,10 +31,11 @@ import com.example.guessthepicture.databinding.PhotoDisplayViewItemBinding
 import com.example.guessthepicture.viewModels.GamesViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.guessthepicture.DialogClickType
+import com.example.guessthepicture.MainActivity
+import com.example.guessthepicture.R
 import com.example.guessthepicture.databinding.AudioRecordOptionBinding
 import com.example.guessthepicture.databinding.FragmentIntroductionBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.ObjectOutputStream
@@ -147,10 +146,10 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
             object :AddPhotoAdapter.ViewHandler{
                 override fun viewHandler(position: Int, clickType : DialogClickType) {
                     when(clickType){
-                        DialogClickType.Image->{
+                        DialogClickType.Image ->{
 
                         }
-                        DialogClickType.Audio->{
+                        DialogClickType.Audio ->{
                             if(ContextCompat.checkSelfPermission(mainActivity, audioPermission) == PackageManager.PERMISSION_GRANTED){
                                 ShowAudioDialog(position)
 
@@ -159,16 +158,16 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
                             }
 
                         }
-                        DialogClickType.Delete->{
+                        DialogClickType.Delete ->{
                             AlertDialog.Builder(mainActivity).apply {
                                 setTitle(mainActivity.resources.getString(R.string.alert))
                                 setMessage(mainActivity.resources.getString(R.string.delete_person))
-                                setPositiveButton(mainActivity.resources.getString(R.string.yes)){_,_->
+                                setPositiveButton(mainActivity.resources.getString(R.string.yes)){ _, _->
                                     lifecycleScope.launch {
                                         gameDB.gameInterface().deletePerson(mainActivity.data[position])
                                     }
                                 }
-                                setNegativeButton(mainActivity.resources.getString(R.string.no)){_,_->}
+                                setNegativeButton(mainActivity.resources.getString(R.string.no)){ _, _->}
                                 show()
                             }
                         }
@@ -179,16 +178,12 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         binding.recycleraddphoto.adapter = addPhotoAdapter
 
         gamesViewModel = ViewModelProvider(this)[GamesViewModel::class.java]
-        gamesViewModel?.personList?.observe(mainActivity
-        ) { t ->
+        gamesViewModel?.personList?.observe(mainActivity) { t ->
             mainActivity.data.clear()
             mainActivity.data.addAll(t as ArrayList<PersonEntity>)
             addPhotoAdapter.notifyDataSetChanged()
         }
-
-
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -197,26 +192,21 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         binding = FragmentIntroductionBinding.inflate(layoutInflater)
         return binding.root
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
-
     private fun initviews() {
         binding.tvadd.setOnClickListener{
             photopickerdialog()
 
         }
-
         binding.btnSave.setOnClickListener {
             if(mainActivity.data.size < 3){
                 AlertDialog.Builder(mainActivity).apply {
                     setTitle(resources.getString(R.string.sorry))
                     setMessage(resources.getString(R.string.add_atleast_three_images))
                     setCancelable(false)
-                    setPositiveButton(resources.getString(R.string.ok), {_,_->})
+                    setPositiveButton(resources.getString(R.string.ok), { _, _->})
                     show()
                 }
             }else{
@@ -227,7 +217,7 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
 
     override fun onClick(p0: View?) {
         when (p0!!.id) {
-            R.id.tvadd->{
+            R.id.tvadd ->{
                photopickerdialog()
 
             }
@@ -260,7 +250,6 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
                 audiofile = mainActivity.data[position].audioRecord
         }
         dialogBinding.startRecord.setOnClickListener {
-
             recorder?.apply {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
                 setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
@@ -278,17 +267,16 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         }
 
         dialogBinding.stoprecord.setOnClickListener {
-
             recorder?.stop()
             try {
                 var fos = FileOutputStream("$dirPath$filename")
                 var out = ObjectOutputStream(fos)
                 out.close()
                 fos.close()
-            } catch (e: IOException) {}
-
+            } catch (e: IOException) {
+                Log.e(TAG, "ShowAudioDialog: ${e.message}", )
+            }
             audiofile = "$dirPath$filename"
-
           lifecycleScope.launch {
               gameDB.gameInterface().updatePerson(PersonEntity(id = position, audioRecord = audiofile))
               Log.e( TAG, "ShowAudioDialog: $audiofile" )

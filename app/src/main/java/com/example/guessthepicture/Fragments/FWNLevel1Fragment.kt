@@ -1,10 +1,8 @@
-package com.example.guessthepicture
+package com.example.guessthepicture.Fragments
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.Gravity
@@ -13,17 +11,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.example.guessthepicture.databinding.ActivityFlipCardLevel1Binding
+import com.example.guessthepicture.ClickInterface
+import com.example.guessthepicture.DialogType
+import com.example.guessthepicture.GeneralFunctions
+import com.example.guessthepicture.MainActivity
+import com.example.guessthepicture.R
 import com.example.guessthepicture.databinding.ActivityFwnlevel1Binding
-import com.example.guessthepicture.databinding.CongratsDialogueBinding
-import com.example.guessthepicture.databinding.PhotoDisplayViewItemBinding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 
-class FWNLevel1Activity : Fragment(){
+class FWNLevel1Fragment : Fragment(){
     lateinit var binding:ActivityFwnlevel1Binding
     private lateinit var pickerDialog: Dialog
     lateinit var mainActivity: MainActivity
@@ -56,11 +54,16 @@ class FWNLevel1Activity : Fragment(){
                     val droppedView = event.localState as View
                     if (v == binding.tvmother) {
                         // Perform actions when the view is dropped on the target
-                        GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, fragment = FWNLevel1Activity(), object : ClickInterface{
-                            override fun onButtonCLick() {
-                                mainActivity.navController.navigate(R.id.action_FWNLevel1Activity_to_FWNLevel2Activity)
-                            }
-                        })
+                        GeneralFunctions.showDialog(
+                            mainActivity,
+                            layoutInflater,
+                            DialogType.happy,
+                            fragment = FWNLevel1Fragment(),
+                            object : ClickInterface {
+                                override fun onButtonCLick() {
+                                    mainActivity.navController.navigate(R.id.action_FWNLevel1Activity_to_FWNLevel2Activity)
+                                }
+                            })
 
                     }
                     else{

@@ -6,7 +6,7 @@
     app:startDestination="@id/introductionActivity2">
     <fragment
         android:id="@+id/introductionActivity2"
-        android:name="com.example.guessthepicture.IntroductionFragment"
+        android:name="com.example.guessthepicture.Fragments.IntroductionFragment"
         android:label="activity_introduction"
         tools:layout="@layout/fragment_introduction" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameLevelsFragment"
-        android:name="com.example.guessthepicture.GameLevelsFragment"
+        android:name="com.example.guessthepicture.Fragments.GameLevelsFragment"
         android:label="activity_game_levels"
         tools:layout="@layout/activity_game_levels" >
         <action
@@ -27,12 +27,15 @@
         <action
             android:id="@+id/action_gameLevelsFragment_to_FWNLevel1Activity"
             app:destination="@id/FWNLevel1Activity" />
+        <action
+            android:id="@+id/action_gameLevelsFragment_to_game4ActivitiesFragment"
+            app:destination="@id/game4ActivitiesFragment" />
     </fragment>
 
 
     <fragment
         android:id="@+id/Level2Activity"
-        android:name="com.example.guessthepicture.Level2Activity"
+        android:name="com.example.guessthepicture.Fragments.Level2Fragnent"
         android:label="activty_level2"
         tools:layout="@layout/activity_level2">
 
@@ -45,7 +48,7 @@
 
     <fragment
         android:id="@+id/matchImagesL1Fragment"
-        android:name="com.example.guessthepicture.MatchImagesL1Fragment"
+        android:name="com.example.guessthepicture.Fragments.MatchImagesL1Fragment"
         android:label="fragment_match_images_l1"
         tools:layout="@layout/fragment_match_images_l1" >
         <action
@@ -56,7 +59,7 @@
     </fragment>
     <fragment
         android:id="@+id/flipCardLevel1Activity"
-        android:name="com.example.guessthepicture.FlipCardLevel1Activity"
+        android:name="com.example.guessthepicture.Fragments.FlipCardLevel1Fragment"
         android:label="activity_flip_card_level1"
         tools:layout="@layout/activity_flip_card_level1" >
         <action
@@ -67,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/flipCardLevel2Activity"
-        android:name="com.example.guessthepicture.FlipCardLevel2Activity"
+        android:name="com.example.guessthepicture.Fragments.FlipCardLevel2Fragment"
         android:label="activity_flip_card_level2"
         tools:layout="@layout/activity_flip_card_level2" >
         <action
@@ -79,7 +82,7 @@
 
     <fragment
         android:id="@+id/FWNLevel1Activity"
-        android:name="com.example.guessthepicture.FWNLevel1Activity"
+        android:name="com.example.guessthepicture.Fragments.FWNLevel1Fragment"
         android:label="activity_fwnlevel1"
         tools:layout="@layout/activity_fwnlevel1">
         <action
@@ -91,7 +94,7 @@
 
     <fragment
         android:id="@+id/FWNLevel2Activity"
-        android:name="com.example.guessthepicture.FWNLevel2Activity"
+        android:name="com.example.guessthepicture.Fragments.FWNLevel2Fragment"
         android:label="activity_fwnlevel2"
         tools:layout="@layout/activity_fwnlevel2">
 
@@ -101,5 +104,10 @@
             app:popUpTo="@id/gameLevelsFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/game4ActivitiesFragment"
+        android:name="com.example.guessthepicture.Fragments.Game4ActivitiesFragment"
+        android:label="fragment_game4_activities"
+        tools:layout="@layout/fragment_game4_activities" />
 
 </navigation>

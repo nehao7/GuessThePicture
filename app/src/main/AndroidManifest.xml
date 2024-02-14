@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -27,25 +27,25 @@
             android:name=".AudioRecordActivity"
             android:exported="false" />
         <activity
-            android:name=".FlipCardLevel2Activity"
+            android:name=".Fragments.FlipCardLevel2Fragment"
             android:exported="false" />
         <activity
-            android:name=".FlipCardLevel1Activity"
+            android:name=".Fragments.FlipCardLevel1Fragment"
             android:exported="false" />
         <activity
-            android:name=".FWNLevel2Activity"
+            android:name=".Fragments.FWNLevel2Fragment"
             android:exported="false" />
         <activity
-            android:name=".FWNLevel1Activity"
+            android:name=".Fragments.FWNLevel1Fragment"
             android:exported="false" />
         <activity
-            android:name=".Level2Activity"
+            android:name=".Fragments.Level2Fragnent"
             android:exported="false" />
         <activity
-            android:name=".MatchImagesL1Fragment"
+            android:name=".Fragments.MatchImagesL1Fragment"
             android:exported="false" />
         <activity
-            android:name=".GameLevelsFragment"
+            android:name=".Fragments.GameLevelsFragment"
             android:exported="false" />
         <activity
             android:name=".SplashActivity"

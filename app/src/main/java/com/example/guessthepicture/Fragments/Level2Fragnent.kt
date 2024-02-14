@@ -1,11 +1,9 @@
-package com.example.guessthepicture
+package com.example.guessthepicture.Fragments
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.DragEvent
@@ -15,15 +13,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.example.guessthepicture.ClickInterface
+import com.example.guessthepicture.DialogType
+import com.example.guessthepicture.GeneralFunctions
+import com.example.guessthepicture.MainActivity
 import com.example.guessthepicture.databinding.ActivityLevel2Binding
 import com.example.guessthepicture.databinding.CongratsDialogueBinding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 import kotlin.random.Random
 
-class Level2Activity : Fragment(){
+class Level2Fragnent : Fragment(){
 
     lateinit var binding:ActivityLevel2Binding
     private lateinit var pickerDialog: Dialog
@@ -33,8 +33,6 @@ class Level2Activity : Fragment(){
     var thirdrandomNumber=0
     lateinit var congratsDialogueBinding: CongratsDialogueBinding
     var randomNumbers = mutableListOf<Int>()
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -123,7 +121,12 @@ class Level2Activity : Fragment(){
                     // Handle the drop
                     val droppedView = event.localState as View
                     if (v == binding.imgmother) {
-                            GeneralFunctions.showDialog(mainActivity, layoutInflater,DialogType.happy, fragment = Level2Activity(),object : ClickInterface{
+                        GeneralFunctions.showDialog(
+                            mainActivity,
+                            layoutInflater,
+                            DialogType.happy,
+                            fragment = Level2Fragnent(),
+                            object : ClickInterface {
 
                                 override fun onButtonCLick() {
                                     mainActivity.navController.popBackStack()

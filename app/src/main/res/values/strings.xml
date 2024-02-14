@@ -9,4 +9,6 @@
     <string name="delete_person">Do you want to delete the person information?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

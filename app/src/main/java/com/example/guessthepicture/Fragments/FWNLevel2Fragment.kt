@@ -1,10 +1,8 @@
-package com.example.guessthepicture
+package com.example.guessthepicture.Fragments
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.DragEvent
 import android.view.Gravity
@@ -16,11 +14,12 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.example.guessthepicture.MainActivity
 import com.example.guessthepicture.databinding.ActivityFwnlevel2Binding
 import com.example.guessthepicture.databinding.CongratsDialogueBinding
 import com.example.guessthepicture.databinding.TryAgainDialogueBinding
 
-class FWNLevel2Activity:Fragment() {
+class FWNLevel2Fragment:Fragment() {
     lateinit var binding: ActivityFwnlevel2Binding
     private lateinit var pickerDialog: Dialog
     lateinit var mainActivity: MainActivity

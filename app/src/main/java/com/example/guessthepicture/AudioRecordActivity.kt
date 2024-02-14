@@ -1,31 +1,23 @@
 package com.example.guessthepicture
 
 import android.Manifest.permission.RECORD_AUDIO
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.AudioRecord
 import android.media.MediaPlayer
 import android.media.MediaRecorder
-import android.net.Uri
-import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.guessthepicture.Fragments.FWNLevel1Fragment
 import com.example.guessthepicture.adapters.AddAudioAdapter
-import com.example.guessthepicture.adapters.AddPhotoAdapter
 import com.example.guessthepicture.databinding.ActivityAudioRecordBinding
-import com.example.guessthepicture.databinding.AudioRecordLayoutBinding
 import com.example.guessthepicture.databinding.AudioRecordOptionBinding
 import com.example.guessthepicture.roomdb.GameDB
 import com.example.guessthepicture.roomdb.PersonEntity
-import kotlinx.coroutines.launch
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.ObjectOutputStream
@@ -120,7 +112,7 @@ class AudioRecordActivity : AppCompatActivity() {
             }
         }
         binding.btnplayGame.setOnClickListener {
-            startActivity(Intent(this,FWNLevel1Activity::class.java))
+            startActivity(Intent(this, FWNLevel1Fragment::class.java))
         }
 
         getAudioFiles()
