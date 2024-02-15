@@ -57,7 +57,6 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     implementation "androidx.room:room-ktx:$room_version"
 
-
     implementation'com.vanniktech:android-image-cropper:4.5.0'
 
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-alpha02"

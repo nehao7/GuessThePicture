@@ -39,6 +39,9 @@ class AddPhotoAdapter(var context: Context,
             binding.btnaddImage.visibility = View.GONE
             binding.btnAddAudio.visibility=View.VISIBLE
 
+            binding.imgplay.setOnClickListener {
+                imgview.viewHandler(position,DialogClickType.Play)
+            }
             binding.img.setOnClickListener {
                 imgview.viewHandler(position, DialogClickType.Image)
             }

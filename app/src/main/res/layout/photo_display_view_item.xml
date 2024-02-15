@@ -9,6 +9,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/apk/res-auto"
     >
+        <ImageView
+            android:id="@+id/imgplay"
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:src="@drawable/baseline_play_circle_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="-6dp"
+            app:tint="@color/black" />
+
 
         <ImageView
             android:id="@+id/imgDelete"

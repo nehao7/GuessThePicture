@@ -30,6 +30,7 @@
         <action
             android:id="@+id/action_gameLevelsFragment_to_game4ActivitiesFragment"
             app:destination="@id/game4ActivitiesFragment" />
+
     </fragment>
 
 
@@ -108,6 +109,15 @@
         android:id="@+id/game4ActivitiesFragment"
         android:name="com.example.guessthepicture.Fragments.Game4ActivitiesFragment"
         android:label="fragment_game4_activities"
-        tools:layout="@layout/fragment_game4_activities" />
+        tools:layout="@layout/fragment_game4_activities" >
+        <action
+            android:id="@+id/action_game4ActivitiesFragment_to_visitTheMallFragment"
+            app:destination="@id/visitTheMallFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/visitTheMallFragment"
+        android:name="com.example.guessthepicture.Fragments.VisitTheMallFragment"
+        android:label="fragment_visit_the_mall"
+        tools:layout="@layout/fragment_visit_the_mall" />
 
 </navigation>

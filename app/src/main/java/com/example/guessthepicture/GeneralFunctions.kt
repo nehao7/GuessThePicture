@@ -27,7 +27,7 @@ enum class DialogType{
 }
 
 enum class DialogClickType{
-    Image, Delete, Audio
+    Image, Delete, Audio,Play
 }
 
 class GeneralFunctions{

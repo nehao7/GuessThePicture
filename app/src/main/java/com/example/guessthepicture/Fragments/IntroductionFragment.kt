@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -36,6 +37,8 @@ import com.example.guessthepicture.MainActivity
 import com.example.guessthepicture.R
 import com.example.guessthepicture.databinding.AudioRecordOptionBinding
 import com.example.guessthepicture.databinding.FragmentIntroductionBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.ObjectOutputStream
@@ -48,6 +51,10 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
     private  var recorder: MediaRecorder ?= null
     private var mediaPlayer = MediaPlayer()
     private var audiofile=""
+    var dirPath=""
+    var filename=""
+    var record = PersonEntity()
+    var personToUpdate=PersonEntity()
     private var dialog:Dialog?=null
     private var captureImgUri:Uri?=null
     private var bitmap : Bitmap ? = null
@@ -138,7 +145,7 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         dialog?.dismiss()
 
         mediaPlayer.setOnCompletionListener {
-           mainActivity.data.add(PersonEntity(audioRecord = audiofile))
+           mainActivity.data.add(PersonEntity(audioRecord = record.audioRecord))
 
         }
         binding.recycleraddphoto.layoutManager = GridLayoutManager(mainActivity,3)
@@ -146,16 +153,39 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
             object :AddPhotoAdapter.ViewHandler{
                 override fun viewHandler(position: Int, clickType : DialogClickType) {
                     when(clickType){
-                        DialogClickType.Image ->{
+                        DialogClickType.Play ->{
 
+                            if(!mediaPlayer.isPlaying){
+                                mediaPlayer.reset()
+                                mediaPlayer.apply {
+                                    setDataSource(mainActivity.data[position].audioRecord)
+                                    prepare()
+                                    start()
+                                }
+                                Log.d("Position State", "$position 1")
+                            }else{
+                                mediaPlayer.pause()
+                            }
                         }
                         DialogClickType.Audio ->{
-                            if(ContextCompat.checkSelfPermission(mainActivity, audioPermission) == PackageManager.PERMISSION_GRANTED){
+                            if( ContextCompat.checkSelfPermission(
+                                    mainActivity,
+                                    Manifest.permission.RECORD_AUDIO
+                                ) != PackageManager.PERMISSION_GRANTED){
+                                audioPermissionRequest.launch(Manifest.permission.RECORD_AUDIO)
+                            }else if(ContextCompat.checkSelfPermission(
+                                    mainActivity,
+                                    Manifest.permission.RECORD_AUDIO
+                                ) == PackageManager.PERMISSION_GRANTED){
+                                personToUpdate=mainActivity.data[position]
                                 ShowAudioDialog(position)
-
-                            }else{
-                                audioPermissionRequest.launch(audioPermission)
                             }
+//                            if(ContextCompat.checkSelfPermission(mainActivity, audioPermission) == PackageManager.PERMISSION_GRANTED){
+//                                ShowAudioDialog(position)
+//                            }
+//                        else{
+//                                audioPermissionRequest.launch(audioPermission)
+//                            }
 
                         }
                         DialogClickType.Delete ->{
@@ -171,12 +201,13 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
                                 show()
                             }
                         }
+
+                        else -> {}
                     }
                 }
             })
         addPhotoAdapter.notifyDataSetChanged()
         binding.recycleraddphoto.adapter = addPhotoAdapter
-
         gamesViewModel = ViewModelProvider(this)[GamesViewModel::class.java]
         gamesViewModel?.personList?.observe(mainActivity) { t ->
             mainActivity.data.clear()
@@ -229,27 +260,15 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
         var dialogBinding = AudioRecordOptionBinding.inflate(layoutInflater)
         dialog = Dialog(mainActivity)
         dialog?.setContentView(dialogBinding.root)
-        if(recorder != null) {
-            recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                MediaRecorder(mainActivity)
-            } else {
-                MediaRecorder()
-            }
-        }
-        var dirPath = "${mainActivity.externalCacheDir?.absolutePath}/"
-
-        val simpleDateFormat = SimpleDateFormat("DD-MM-yyyy_mm.ss.hh")
-        val date = simpleDateFormat.format(Date())
-        var filename = "audio_record_$date"
-
-//        audiofile = "$dirPath$filename.mp3"
-        println("Audio path $dirPath$filename.mp3")
-
-        if(position > -1){
-            if(mainActivity.data[position].audioRecord != null)
-                audiofile = mainActivity.data[position].audioRecord
-        }
         dialogBinding.startRecord.setOnClickListener {
+
+            recorder = MediaRecorder()
+            dirPath = "${mainActivity.externalCacheDir?.absolutePath}/"
+
+            val simpleDateFormat = SimpleDateFormat("DD-MM-yyyy_mm.ss.hh")
+            val date = simpleDateFormat.format(Date())
+            filename = "audio_record_$date"
+
             recorder?.apply {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
                 setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
@@ -260,9 +279,22 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
                     prepare()
                     start()
                 } catch (e: IOException) {
-                    println("in exception ${e.toString()}")
+
                 }
             }
+//            recorder?.apply {
+//                setAudioSource(MediaRecorder.AudioSource.MIC)
+//                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+//                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+//                setOutputFile("$dirPath$filename.mp3")
+//
+//                try {
+//                    prepare()
+//                    start()
+//                } catch (e: IOException) {
+//                    println("in exception ${e.toString()}")
+//                }
+//            }
 
         }
 
@@ -274,35 +306,111 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
                 out.close()
                 fos.close()
             } catch (e: IOException) {
-                Log.e(TAG, "ShowAudioDialog: ${e.message}", )
+
             }
-            audiofile = "$dirPath$filename"
-          lifecycleScope.launch {
-              gameDB.gameInterface().updatePerson(PersonEntity(id = position, audioRecord = audiofile))
-              Log.e( TAG, "ShowAudioDialog: $audiofile" )
-          }
+//            lifecycleScope.launch {
+//                withContext(Dispatchers.IO) {
+//                    for (p in mainActivity.data.indices) {
+//                        val updatedAudioPath = "$dirPath$filename.mp3"
+//                        gameDB.gameInterface().updatePerson(PersonEntity(audioRecord = updatedAudioPath))
+//                    }
+//                }
+//            }
+//            lifecycleScope.launch{
+//                for (p in mainActivity.data.indices){
+//                    gameDB.gameInterface().updatePerson(PersonEntity(audioRecord = "$dirPath$filename.mp3" ))
+//                }
+//
+//
+//            }
+//            record.fileName = filename
+            audiofile="$dirPath$filename.mp3"
+
+            record.audioRecord = "$dirPath$filename.mp3"
+//            record.empsPath = "$dirPath$filename"
+
+//            lifecycleScope.launch{
+//                gameDB.gameInterface().updatePerson(record)
+//
+//            }
+
+//            class saveRecording:  AsyncTask<Void, Void, Void>(){
+//                override fun doInBackground(vararg p0: Void?): Void? {
+////                    audioDatabase.audioRecordsDao().insert(record)
+//                    gameDB.gameInterface().updatePerson(record)
+//                    return null
+//                }
+//
+//                override fun onPostExecute(result: Void?) {
+//                    super.onPostExecute(result)
+//                    dialog.dismiss()
+//                    getAudioFiles()
+//                }
+//            }
+//            saveRecording().execute()
+
+
+//            recorder?.stop()
+//            try {
+//                var fos = FileOutputStream("$dirPath$filename")
+//                var out = ObjectOutputStream(fos)
+//                out.close()
+//                fos.close()
+//            } catch (e: IOException) {
+//                Log.e(TAG, "ShowAudioDialog: ${e.message}", )
+//            }
+//            audiofile = "$dirPath$filename"
+//          lifecycleScope.launch {
+//              gameDB.gameInterface().updatePerson(PersonEntity(id = position, audioRecord = audiofile))
+//              Log.e( TAG, "ShowAudioDialog: $audiofile" )
+//          }
         }
 
         dialogBinding.btnPlayRecordRecord.setOnClickListener {
-            mediaPlayer.reset()
-            mediaPlayer.apply {
-                setDataSource("$audiofile.mp3")
-                prepare()
-                start()
+
+            if(!mediaPlayer.isPlaying){
+                mediaPlayer.reset()
+                mediaPlayer.apply {
+                    setDataSource(audiofile)
+                    prepare()
+                    start()
+                }
+                Log.d("Position State", "$position 1")
+//                adapter.updatePosition(position, 1)
+            }else{
+                mediaPlayer.pause()
+//                adapter.updatePosition(position, 0)
             }
-//            mediaPlayer.setDataSource(audiofile)
-//            mediaPlayer.prepare()
-//            mediaPlayer.start()
+
         }
         dialogBinding.btnSave.setOnClickListener {
+//            if (mainActivity.data.isNullOrEmpty().not()) {
+                lifecycleScope.launch {
+//                    withContext(Dispatchers.IO) {
+//                    val updatedAudioPath = "$dirPath$filename.mp3"
+                        personToUpdate.audioRecord = audiofile
+                        gameDB.gameInterface().updatePerson(personToUpdate)
+                        Toast.makeText(mainActivity, "Recording Saved", Toast.LENGTH_SHORT).show()
+                        dialog?.dismiss()
+                    }
+//                gameDB.gameInterface().updatePerson(PersonEntity(audioRecord = record.audioRecord))
+                }
 
-
-        }
+//            }
+//        }
         dialogBinding.btnCancel.setOnClickListener {
             dialog?.dismiss()
         }
         dialog?.show()
     }
+
+//    fun getAudioFiles() {
+//        viewModelScope.launch {
+//            list.clear()
+//            list.addAll(audioDatabase.audioRecordsDao().getAllAudioRecords())
+//            adapter.notifyDataSetChanged()
+//        }
+//    }
     private fun photopickerdialog(position: Int = -1) {
         var dialog = Dialog(mainActivity)
         photoDisplayViewItemBinding =  PhotoDisplayViewItemBinding.inflate(layoutInflater)
