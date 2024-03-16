@@ -87,9 +87,9 @@ class FlipCardLevel2Fragment : Fragment() {
 
 
 
-        randomNumber = Random.nextInt(mainActivity.data.size)
-        binding.imgmotheroriginal.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
-        binding.imgmother.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
+//        randomNumber = Random.nextInt(mainActivity.data.size)
+//        binding.imgmotheroriginal.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
+//        binding.imgmother.setImageURI(Uri.parse(mainActivity.data[randomNumber].picture))
 
 ////        var nextNumber = Random.nextInt(mainActivity.data.size)
 //        var secondRandom = Random.nextInt(mainActivity.data.size)

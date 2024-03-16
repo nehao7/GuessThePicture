@@ -26,14 +26,16 @@
         android:layout_marginStart="50dp"
         android:src="@drawable/mother"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvfather" />
+        app:layout_constraintTop_toTopOf="@+id/imgfather"
+        />
 
-    <TextView
-        android:id="@+id/tvbrother"
+    <ImageView
+        android:id="@+id/imgbrother"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:text="Arik"
         android:textSize="30dp"
+        android:src="@drawable/baseline_play_circle_24"
         android:gravity="center"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/title"
@@ -42,31 +44,32 @@
         android:layout_marginEnd="80dp"
         />
 
-    <TextView
-        android:id="@+id/tvfather"
+    <ImageView
+        android:id="@+id/imgfather"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:text="John"
         android:textSize="30dp"
         android:gravity="center"
+        android:src="@drawable/baseline_play_circle_24"
         android:textStyle="bold"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvbrother" />
+        app:layout_constraintTop_toBottomOf="@id/imgbrother" />
 
-
-    <TextView
-        android:id="@+id/tvmother"
+    <ImageView
+        android:id="@+id/imgmother"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:gravity="center"
         android:text="Maria"
+        android:src="@drawable/baseline_play_circle_24"
         android:textSize="30dp"
         android:textStyle="bold"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvfather" />
+        app:layout_constraintTop_toBottomOf="@id/imgfather" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

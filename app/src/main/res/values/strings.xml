@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">GuessThePicture</string>
     <string name="sorry">Sorry</string>
-    <string name="add_atleast_three_images">Add atleast three images</string>
+    <string name="add_atleast_three_images">Add atleast three images and record audio for each image</string>
+    <string name="add_audio">record audio for each image</string>
+
     <string name="ok">OK</string>
     <string name="add_info">Add Info</string>
     <string name="record_audio">Record Audio</string>

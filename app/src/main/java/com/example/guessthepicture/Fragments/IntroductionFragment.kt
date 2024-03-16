@@ -232,17 +232,24 @@ class IntroductionFragment : Fragment(), View.OnClickListener{
 
         }
         binding.btnSave.setOnClickListener {
-            if(mainActivity.data.size < 3){
-                AlertDialog.Builder(mainActivity).apply {
-                    setTitle(resources.getString(R.string.sorry))
-                    setMessage(resources.getString(R.string.add_atleast_three_images))
-                    setCancelable(false)
-                    setPositiveButton(resources.getString(R.string.ok), { _, _->})
-                    show()
+                if (mainActivity.data.size < 3 || mainActivity.data.any { it.audioRecord.isEmpty() }) {
+                    AlertDialog.Builder(mainActivity).apply {
+                        setTitle(resources.getString(R.string.sorry))
+                        setMessage(
+                            if (mainActivity.data.size < 3) {
+                                resources.getString(R.string.add_atleast_three_images)
+                            } else {
+                                resources.getString(R.string.add_audio)
+                            }
+                        )
+                        setCancelable(false)
+                        setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
+                        show()
+                    }
+                } else {
+                    findNavController().navigate(R.id.gameLevelsFragment)
                 }
-            }else{
-                findNavController().navigate(R.id.gameLevelsFragment)
-            }
+
         }
     }
 
